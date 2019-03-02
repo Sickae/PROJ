@@ -38,6 +38,7 @@ namespace PROJ.DataAccess.SessionBuilder
                     .Conventions.Add<HasManyConvention>()
                     .Conventions.Add<ReferenceConvention>()
                     .Conventions.Add<PrimaryKeySequenceConvention>()
+                    .Conventions.Add<NotNullConvention>()
             ));
 
             var cfg = config.BuildConfiguration();

@@ -1,7 +1,19 @@
-﻿namespace PROJ.DataAccess.Entities
+﻿using System;
+
+namespace PROJ.DataAccess.Entities
 {
-    public class Entity
+    public abstract class Entity
     {
-        public int Id { get; protected set; }
+        public virtual int Id { get; set; }
+
+        public virtual DateTime CreationDate { get; set; }
+
+        public virtual DateTime ModificationDate { get; set; }
+
+        protected Entity()
+        {
+            CreationDate = DateTime.UtcNow;
+            ModificationDate = DateTime.UtcNow;
+        }
     }
 }
