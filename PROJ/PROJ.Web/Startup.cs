@@ -62,7 +62,7 @@ namespace PROJ.Web
             {
                 opt.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
                 opt.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-                opt.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                opt.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
             }).AddIdentityCookies();
 
             services.ConfigureApplicationCookie(opt =>

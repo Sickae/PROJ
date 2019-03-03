@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PROJ.DataAccess.Entities;
 using PROJ.Logic.Authorization;
 using System.Security.Claims;
 
@@ -10,9 +9,9 @@ namespace PROJ.Logic.Identity
         public AppIdentityUserClaim()
         { }
 
-        public AppIdentityUserClaim(User user, RoleConstants.Role role)
+        public AppIdentityUserClaim(AppIdentityUser identityUser, RoleConstants.Role role)
         {
-            UserId = user.Id;
+            UserId = identityUser.Id;
             ClaimType = ClaimTypes.Role;
             ClaimValue = role.ToString();
         }

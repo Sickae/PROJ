@@ -13,7 +13,8 @@ namespace PROJ.Logic.Mapping
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<AppIdentityUser, UserDTO>().ReverseMap();
             CreateMap<UserClaim, AppIdentityUserClaim>().ReverseMap();
-            CreateMap<UserClaim, UserClaimDTO>();
+            CreateMap<UserClaim, UserClaimDTO>().ReverseMap();
+            CreateMap<AppIdentityUserClaim, UserClaimDTO>().ReverseMap();
         }
     }
 }

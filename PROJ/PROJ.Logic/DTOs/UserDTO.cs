@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PROJ.Logic.DTOs
 {
@@ -18,6 +19,6 @@ namespace PROJ.Logic.DTOs
 
         public DateTime? LastLoginDate { get; set; }
 
-        public UserClaimDTO UserClaims { get; set; }
+        public IList<UserClaimDTO> UserClaims { get; set; }
     }
 }

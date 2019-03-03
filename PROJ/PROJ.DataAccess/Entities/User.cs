@@ -1,5 +1,6 @@
 ﻿using PROJ.Shared.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace PROJ.DataAccess.Entities
 {
@@ -23,6 +24,6 @@ namespace PROJ.DataAccess.Entities
 
         public virtual DateTime? LastLoginDate { get; set; }
 
-        public virtual UserClaim UserClaims { get; set; }
+        public virtual IList<UserClaim> UserClaims { get; set; }
     }
 }

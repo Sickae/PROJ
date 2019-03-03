@@ -8,6 +8,6 @@ namespace PROJ.Logic.Identity
     {
         public DateTime? LastLoginDate { get; set; }
 
-        public IList<AppIdentityUserClaim> UserClaims { get; set; }
+        public IList<AppIdentityUserClaim> UserClaims { get; set; } = new List<AppIdentityUserClaim>();
     }
 }
