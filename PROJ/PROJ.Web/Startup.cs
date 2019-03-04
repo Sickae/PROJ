@@ -70,7 +70,7 @@ namespace PROJ.Web
                 opt.Cookie.HttpOnly = true;
                 opt.ExpireTimeSpan = TimeSpan.FromHours(2);
                 opt.LoginPath = "/Identity/Account/Login";
-                opt.LogoutPath = "/Identity/Account/Logout";
+                opt.LogoutPath = "/User/Logout";
                 opt.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
 
