@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PROJ.Logic.Authorization;
 using PROJ.Logic.Identity;
 using PROJ.Logic.Managers;
 using PROJ.Web.Controllers;
@@ -13,14 +14,14 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager _signInManager;
-        private readonly IdentityUserManager _userManager;
+        private readonly IdentityUserManager _identityUserManager;
         private readonly ILogger<LoginModel> _logger;
 
         public RegisterModel(SignInManager signInManager, IdentityUserManager userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userManager = userManager;
+            _identityUserManager = userManager;
         }
 
         [BindProperty]
@@ -50,7 +51,7 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new AppIdentityUser { UserName = Input.Username };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _identityUserManager.CreateAsync(user, Input.Password);
                 if (result != null && result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true);

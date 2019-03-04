@@ -14,14 +14,14 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager _signInManager;
-        private readonly IdentityUserManager _userManager;
+        private readonly IdentityUserManager _identityUserManager;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager signInManager, IdentityUserManager userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userManager = userManager;
+            _identityUserManager = userManager;
         }
 
         [BindProperty]
@@ -60,14 +60,17 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _identityUserManager.FindByNameAsync(Input.Username);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, false);
+                await _identityUserManager.UpdateSecurityStampAsync(user);
+
                 if (result != null && result.Succeeded)
                 {
+                    await _signInManager.SignInAsync(user, true);
                     _logger.LogInformation("User logged in.");
 
-                    var user = await _userManager.FindByNameAsync(Input.Username);
                     user.LastLoginDate = DateTime.UtcNow;
-                    await _userManager.UpdateAsync(user);
+                    await _identityUserManager.UpdateAsync(user);
 
                     return LocalRedirect(returnUrl);
                 }
