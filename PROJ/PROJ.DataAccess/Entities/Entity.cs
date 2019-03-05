@@ -10,6 +10,8 @@ namespace PROJ.DataAccess.Entities
 
         public virtual DateTime ModificationDate { get; set; }
 
+        public virtual bool IsDeleted { get; set; }
+
         protected Entity()
         {
             CreationDate = DateTime.UtcNow;
