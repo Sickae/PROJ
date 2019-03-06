@@ -4,7 +4,7 @@ namespace PROJ.Logic.DTOs
 {
     public class DTOBase
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
         public DateTime CreationDate { get; set; }
 

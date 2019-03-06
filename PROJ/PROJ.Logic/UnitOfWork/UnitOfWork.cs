@@ -75,7 +75,7 @@ namespace PROJ.Logic.UnitOfWork
 
             if (!Attribute.IsDefined(entity.GetType(), typeof(DeletableEntityAttribute)))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("This entity cannot be physically deleted.");
             }
             InTransaction(() => _session.Delete(entity));
         }
