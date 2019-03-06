@@ -1,5 +1,8 @@
-﻿namespace PROJ.DataAccess.Entities
+﻿using PROJ.Shared.Attributes;
+
+namespace PROJ.DataAccess.Entities
 {
+    [DeletableEntity]
     public class UserClaim : Entity
     {
         public virtual User User { get; set; }

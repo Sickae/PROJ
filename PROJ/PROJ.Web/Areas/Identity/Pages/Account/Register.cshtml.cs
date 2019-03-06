@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using PROJ.Logic.Authorization;
 using PROJ.Logic.Identity;
-using PROJ.Logic.Managers;
+using PROJ.Logic.Identity.Managers;
 using PROJ.Web.Controllers;
 using System.Threading.Tasks;
 

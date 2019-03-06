@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace PROJ.DataAccess.Entities
 {
+    [DeletableEntity]
     public class User : Entity
     {
         [NotNull]

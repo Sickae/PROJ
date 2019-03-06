@@ -3,19 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PROJ.Logic.Identity;
 
-namespace PROJ.Logic.Managers
+namespace PROJ.Logic.Identity.Managers
 {
     public class SignInManager : SignInManager<AppIdentityUser>
     {
-        public SignInManager(UserManager<AppIdentityUser> userManager,
+        public SignInManager(IdentityUserManager identityUserManager,
             IHttpContextAccessor contextAccessor,
             IUserClaimsPrincipalFactory<AppIdentityUser> claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
             ILogger<SignInManager<AppIdentityUser>> logger,
             IAuthenticationSchemeProvider schemes)
-            : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
+            : base(identityUserManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
         { }
     }
 }

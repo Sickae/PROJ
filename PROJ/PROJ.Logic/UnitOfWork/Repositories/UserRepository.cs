@@ -2,21 +2,17 @@
 using NHibernate;
 using PROJ.DataAccess.Entities;
 using PROJ.Logic.DTOs;
-using PROJ.Logic.Managers.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace PROJ.Logic.Managers
+namespace PROJ.Logic.UnitOfWork.Repositories
 {
-    public class UserManager : ManagerBase<User, UserDTO>, IUserManager
+    public class UserRepository : Repository<User, UserDTO>
     {
-        public UserManager(ISession session) : base(session)
+        public UserRepository(ISession session) : base(session)
         { }
 
         public IList<UserDTO> GetByClaim(string claimType, string claimValue)
-        {   
+        {
             UserClaim userClaimAlias = null;
             var entities = _session.QueryOver<User>()
                 .JoinAlias(x => x.UserClaims, () => userClaimAlias)
@@ -26,18 +22,11 @@ namespace PROJ.Logic.Managers
             return Mapper.Map<IList<UserDTO>>(entities);
         }
 
-        public void Delete(int id)
-        {
-            var entity = Get(id);
-            InTransaction(() =>
-            {
-                _session.Delete(entity);
-            });
-        }
-
         public UserDTO FindByName(string normalizedUserName)
         {
-            var entity = _session.QueryOver<User>().Where(x => x.NormalizedUserName == normalizedUserName).List().SingleOrDefault();
+            var entity = _session.QueryOver<User>()
+                .Where(x => x.NormalizedUserName == normalizedUserName)
+                .SingleOrDefault();
 
             return Mapper.Map<UserDTO>(entity);
         }

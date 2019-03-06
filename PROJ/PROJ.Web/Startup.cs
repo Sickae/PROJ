@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
-using PROJ.DataAccess.Entities;
 using PROJ.DataAccess.SessionBuilder;
 using PROJ.Logic.Identity;
-using PROJ.Logic.Managers;
-using PROJ.Logic.Managers.Interfaces;
+using PROJ.Logic.Identity.Managers;
 using PROJ.Logic.Mapping;
+using PROJ.Logic.UnitOfWork;
+using PROJ.Logic.UnitOfWork.Interfaces;
+using PROJ.Logic.UnitOfWork.Repositories;
 using System;
 using System.Linq;
 
@@ -82,8 +81,26 @@ namespace PROJ.Web
 
             services.AddScoped<AppIdentityStore>();
             services.AddScoped<AppIdentityErrorDescriber>();
-            services.AddScoped<IUserManager, UserManager>();
-            services.AddScoped<IUserClaimManager, UserClaimManager>();
+
+            // Repositories
+            services.AddScoped<UserRepository>();
+            services.AddScoped<UserClaimRepository>();
+            services.AddScoped<ProjectRepository>();
+            services.AddScoped<TaskGroupRepository>();
+            services.AddScoped<TaskRepository>();
+            services.AddScoped<ChecklistRepository>();
+            services.AddScoped<ChecklistTaskRepository>();
+            services.AddScoped<CommentRepository>();
+
+            // Managers
+            services.AddScoped<UserManager>();
+            services.AddScoped<UserClaimManager>();
+            services.AddScoped<ProjectManager>();
+            services.AddScoped<TaskGroupManager>();
+            services.AddScoped<TaskManager>();
+            services.AddScoped<ChecklistManager>();
+            services.AddScoped<ChecklistTaskManager>();
+            services.AddScoped<CommentManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

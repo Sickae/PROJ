@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using PROJ.Logic.Authorization;
 using PROJ.Logic.DTOs;
-using PROJ.Logic.Managers.Interfaces;
+using PROJ.Logic.UnitOfWork;
+using PROJ.Logic.UnitOfWork.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,17 @@ namespace PROJ.Logic.Identity
 {
     public class AppIdentityStore : UserStoreBase<AppIdentityUser, int, AppIdentityUserClaim, IdentityUserLogin<int>, IdentityUserToken<int>>
     {
-        private readonly IUserManager _userManager;
-        private readonly IUserClaimManager _userClaimManager;
+        private readonly UserRepository _userRepository;
+        private readonly UserClaimRepository _userClaimRepository;
+        private readonly UserManager _userManager;
+        private readonly UserClaimManager _userClaimManager;
 
-        public AppIdentityStore(AppIdentityErrorDescriber describer, IUserManager userManager, IUserClaimManager userClaimManager) : base(describer)
+        public override IQueryable<AppIdentityUser> Users => throw new NotImplementedException();
+
+        public AppIdentityStore(AppIdentityErrorDescriber describer, UserRepository userRepository, UserClaimRepository userClaimRepository, UserManager userManager, UserClaimManager userClaimManager) : base(describer)
         {
+            _userRepository = userRepository;
+            _userClaimRepository = userClaimRepository;
             _userManager = userManager;
             _userClaimManager = userClaimManager;
         }
@@ -29,8 +36,6 @@ namespace PROJ.Logic.Identity
         }
 
         #region User Management
-        public override IQueryable<AppIdentityUser> Users => _userManager.GetAll().Select(Mapper.Map<AppIdentityUser>).ToList().AsQueryable();
-
         public override Task<IdentityResult> CreateAsync(AppIdentityUser identityUser, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -44,13 +49,13 @@ namespace PROJ.Logic.Identity
             var newUser = new UserDTO();
             Map(identityUser, newUser);
 
-            newUser.Id = _userManager.Save(newUser);
+            newUser.Id = _userManager.Create(newUser);
             Mapper.Map(newUser, identityUser);
 
             var claim = new AppIdentityUserClaim(identityUser, RoleConstants.Role.User).ToClaim();
             AddClaimsAsync(identityUser, new[] { claim }, cancellationToken);
 
-            var savedClaims = _userClaimManager.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
+            var savedClaims = _userClaimRepository.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
             identityUser.UserClaims = Mapper.Map<IList<AppIdentityUserClaim>>(savedClaims);
 
             UpdateAsync(identityUser, cancellationToken);
@@ -68,7 +73,8 @@ namespace PROJ.Logic.Identity
                 throw new ArgumentNullException(nameof(identityUser));
             }
 
-            _userManager.Delete(identityUser.Id);
+            var user = Mapper.Map<UserDTO>(identityUser);
+            _userManager.Delete(user);
 
             return Task.FromResult(IdentityResult.Success);
         }
@@ -78,7 +84,7 @@ namespace PROJ.Logic.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            var user = _userManager.Get(int.Parse(userId));
+            var user = _userRepository.Get(int.Parse(userId));
             return Task.FromResult(Mapper.Map<AppIdentityUser>(user));
         }
 
@@ -87,7 +93,7 @@ namespace PROJ.Logic.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            var user = _userManager.FindByName(normalizedUserName);
+            var user = _userRepository.FindByName(normalizedUserName);
             return Task.FromResult(Mapper.Map<AppIdentityUser>(user));
         }
 
@@ -101,7 +107,7 @@ namespace PROJ.Logic.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            var user = _userManager.Get(userId);
+            var user = _userRepository.Get(userId);
             return Task.FromResult(Mapper.Map<AppIdentityUser>(user));
         }
 
@@ -183,7 +189,7 @@ namespace PROJ.Logic.Identity
             var user = new UserDTO();
             Map(identityUser, user);
 
-            _userManager.Save(user);
+            _userManager.SaveChanges(user);
 
             return Task.FromResult(IdentityResult.Success);
         }
@@ -241,7 +247,7 @@ namespace PROJ.Logic.Identity
                 throw new ArgumentNullException(nameof(identityUser));
             }
 
-            var claims = _userClaimManager.GetByUserId(identityUser.Id)
+            var claims = _userClaimRepository.GetByUserId(identityUser.Id)
                 .Select(Mapper.Map<AppIdentityUserClaim>)
                 .Select(x => x.ToClaim())
                 .ToList() as IList<Claim>;
@@ -263,7 +269,7 @@ namespace PROJ.Logic.Identity
                 throw new ArgumentNullException(nameof(claims));
             }
 
-            var user = _userManager.Get(identityUser.Id);
+            var user = _userRepository.Get(identityUser.Id);
             if (user == null)
             {
                 return Task.FromResult(IdentityResult.Failed(
@@ -274,9 +280,8 @@ namespace PROJ.Logic.Identity
             {
                 var newClaim = CreateUserClaim(identityUser, claim);
                 var userClaim = Mapper.Map<UserClaimDTO>(newClaim);
-                userClaim.Id = 0;
                 userClaim.User = user;
-                _userClaimManager.Save(userClaim);
+                _userClaimManager.Create(userClaim);
             }
 
             return Task.FromResult(IdentityResult.Success);
@@ -300,13 +305,13 @@ namespace PROJ.Logic.Identity
                 throw new ArgumentNullException(nameof(newClaim));
             }
 
-            var matchedClaims = _userClaimManager.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
+            var matchedClaims = _userClaimRepository.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
 
             foreach (var matchedClaim in matchedClaims)
             {
                 matchedClaim.ClaimType = newClaim.Type;
                 matchedClaim.ClaimValue = newClaim.Value;
-                _userClaimManager.Save(matchedClaim);
+                _userClaimManager.SaveChanges(matchedClaim);
             }
 
             return Task.FromResult(IdentityResult.Success);
@@ -328,10 +333,10 @@ namespace PROJ.Logic.Identity
 
             foreach (var claim in claims)
             {
-                var userClaims = _userClaimManager.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
+                var userClaims = _userClaimRepository.GetSpecificClaimByUserId(identityUser.Id, claim.Type, claim.Value);
                 foreach (var userClaim in userClaims)
                 {
-                    _userClaimManager.Delete(userClaim.Id);
+                    _userClaimManager.Delete(userClaim);
                 }
             }
 
@@ -348,7 +353,7 @@ namespace PROJ.Logic.Identity
                 throw new ArgumentNullException(nameof(claim));
             }
 
-            var users = _userManager.GetByClaim(claim.Type, claim.Value);
+            var users = _userRepository.GetByClaim(claim.Type, claim.Value);
             return Task.FromResult(Mapper.Map<IList<AppIdentityUser>>(users));
         }
         #endregion

@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using NHibernate;
 using PROJ.DataAccess.Entities;
 using PROJ.Logic.DTOs;
-using PROJ.Logic.Managers.Interfaces;
+using System.Collections.Generic;
 
-namespace PROJ.Logic.Managers
+namespace PROJ.Logic.UnitOfWork.Repositories
 {
-    public class UserClaimManager : ManagerBase<UserClaim, UserClaimDTO>, IUserClaimManager
+    public class UserClaimRepository : Repository<UserClaim, UserClaimDTO>
     {
-        public UserClaimManager(ISession session) : base(session)
+        public UserClaimRepository(ISession session) : base(session)
         { }
 
         public IList<UserClaimDTO> GetByUserId(int userId)
@@ -32,15 +31,6 @@ namespace PROJ.Logic.Managers
                 .List();
 
             return Mapper.Map<IList<UserClaimDTO>>(entities);
-        }
-
-        public void Delete(int id)
-        {
-            var entity = Get(id);
-            InTransaction(() =>
-            {
-                _session.Delete(id);
-            });
         }
     }
 }

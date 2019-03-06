@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace PROJ.Logic.Managers
+namespace PROJ.Logic.Identity.Managers
 {
     public class IdentityUserManager : UserManager<AppIdentityUser>
     {
