@@ -2,6 +2,7 @@
 using NHibernate;
 using PROJ.DataAccess.Entities;
 using PROJ.Logic.DTOs;
+using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Interfaces;
 using PROJ.Shared.Attributes;
 using System;
@@ -12,11 +13,13 @@ namespace PROJ.Logic.UnitOfWork.Managers
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ISession _session;
+        protected readonly IAppContext _appContext;
 
-        public ManagerBase(IUnitOfWork unitOfWork)
+        public ManagerBase(IUnitOfWork unitOfWork, IAppContext appContext)
         {
             _unitOfWork = unitOfWork;
             _session = unitOfWork.Session;
+            _appContext = appContext;
         }
 
         public virtual int Create(TDto dto)

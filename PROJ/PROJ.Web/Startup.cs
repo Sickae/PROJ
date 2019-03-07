@@ -10,6 +10,7 @@ using NHibernate;
 using PROJ.DataAccess.SessionBuilder;
 using PROJ.Logic.Identity;
 using PROJ.Logic.Identity.Managers;
+using PROJ.Logic.Interfaces;
 using PROJ.Logic.Mapping;
 using PROJ.Logic.UnitOfWork;
 using PROJ.Logic.UnitOfWork.Interfaces;
@@ -80,9 +81,12 @@ namespace PROJ.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAppContext, Infrastructure.AppContext>();
 
             services.AddScoped<AppIdentityStore>();
             services.AddScoped<AppIdentityErrorDescriber>();
+
+            services.AddScoped(provider => new Lazy<IdentityUserManager>(() => provider.GetService<IdentityUserManager>()));
 
             // Repositories
             services.AddScoped<UserRepository>();
