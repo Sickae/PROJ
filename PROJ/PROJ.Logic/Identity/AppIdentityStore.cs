@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using PROJ.Logic.Authorization;
 using PROJ.Logic.DTOs;
-using PROJ.Logic.UnitOfWork;
+using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,12 +17,12 @@ namespace PROJ.Logic.Identity
     {
         private readonly UserRepository _userRepository;
         private readonly UserClaimRepository _userClaimRepository;
-        private readonly UserManager _userManager;
-        private readonly UserClaimManager _userClaimManager;
+        private readonly IUserManager _userManager;
+        private readonly IUserClaimManager _userClaimManager;
 
         public override IQueryable<AppIdentityUser> Users => throw new NotImplementedException();
 
-        public AppIdentityStore(AppIdentityErrorDescriber describer, UserRepository userRepository, UserClaimRepository userClaimRepository, UserManager userManager, UserClaimManager userClaimManager) : base(describer)
+        public AppIdentityStore(AppIdentityErrorDescriber describer, UserRepository userRepository, UserClaimRepository userClaimRepository, IUserManager userManager, IUserClaimManager userClaimManager) : base(describer)
         {
             _userRepository = userRepository;
             _userClaimRepository = userClaimRepository;
@@ -189,7 +189,7 @@ namespace PROJ.Logic.Identity
             var user = new UserDTO();
             Map(identityUser, user);
 
-            _userManager.SaveChanges(user);
+            _userManager.Save(user);
 
             return Task.FromResult(IdentityResult.Success);
         }
@@ -311,7 +311,7 @@ namespace PROJ.Logic.Identity
             {
                 matchedClaim.ClaimType = newClaim.Type;
                 matchedClaim.ClaimValue = newClaim.Value;
-                _userClaimManager.SaveChanges(matchedClaim);
+                _userClaimManager.Save(matchedClaim);
             }
 
             return Task.FromResult(IdentityResult.Success);

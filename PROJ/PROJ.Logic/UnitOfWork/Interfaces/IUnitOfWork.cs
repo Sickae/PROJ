@@ -1,13 +1,13 @@
-﻿using PROJ.DataAccess.Entities;
-using PROJ.Logic.DTOs;
+﻿using NHibernate;
+using System;
 
 namespace PROJ.Logic.UnitOfWork.Interfaces
 {
-    public interface IUnitOfWork<TEntity, TDto> where TEntity : Entity where TDto : DTOBase
+    public interface IUnitOfWork : IDisposable
     {
-        int SaveChanges(TDto dto);
-        int Create(TDto dto);
-        void Delete(TDto dto);
-        void Delete(int id);
+        ISession Session { get; }
+
+        void UseTransaction(Action action);
+        void SaveChanges();
     }
 }

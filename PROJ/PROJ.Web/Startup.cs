@@ -13,6 +13,8 @@ using PROJ.Logic.Identity.Managers;
 using PROJ.Logic.Mapping;
 using PROJ.Logic.UnitOfWork;
 using PROJ.Logic.UnitOfWork.Interfaces;
+using PROJ.Logic.UnitOfWork.Managers;
+using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using System;
 using System.Linq;
@@ -92,15 +94,18 @@ namespace PROJ.Web
             services.AddScoped<ChecklistTaskRepository>();
             services.AddScoped<CommentRepository>();
 
+            // UnitOfWork
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             // Managers
-            services.AddScoped<UserManager>();
-            services.AddScoped<UserClaimManager>();
-            services.AddScoped<ProjectManager>();
-            services.AddScoped<TaskGroupManager>();
-            services.AddScoped<TaskManager>();
-            services.AddScoped<ChecklistManager>();
-            services.AddScoped<ChecklistTaskManager>();
-            services.AddScoped<CommentManager>();
+            services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IUserClaimManager, UserClaimManager>();
+            services.AddScoped<IProjectManager, ProjectManager>();
+            services.AddScoped<ITaskGroupManager, TaskGroupManager>();
+            services.AddScoped<ITaskManager, TaskManager>();
+            services.AddScoped<IChecklistManager, ChecklistManager>();
+            services.AddScoped<IChecklistTaskManager, ChecklistTaskManager>();
+            services.AddScoped<ICommentManager, CommentManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

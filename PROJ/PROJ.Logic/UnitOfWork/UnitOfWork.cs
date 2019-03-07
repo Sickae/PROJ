@@ -1,97 +1,46 @@
-﻿using AutoMapper;
-using NHibernate;
-using PROJ.DataAccess.Entities;
-using PROJ.Logic.DTOs;
+﻿using NHibernate;
 using PROJ.Logic.UnitOfWork.Interfaces;
-using PROJ.Shared.Attributes;
 using System;
 
 namespace PROJ.Logic.UnitOfWork
 {
-    public abstract class UnitOfWork<TEntity, TDto> : IUnitOfWork<TEntity, TDto> where TEntity : Entity where TDto : DTOBase
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly ISession _session;
+        public ISession Session { get; private set; }
+
+        private ITransaction _transaction;
 
         public UnitOfWork(ISession session)
         {
-            _session = session;
+            Session = session;
         }
 
-        public int Create(TDto dto)
+        public void UseTransaction(Action action)
         {
-            if (dto == null)
+            if (_transaction == null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                _transaction = Session.BeginTransaction();
+            }
+            action();
+        }
+
+        public void SaveChanges()
+        {
+            if (_transaction == null)
+            {
+                throw new InvalidOperationException("There is no transaction to commit.");
             }
 
-            var entity = Map(dto);
-            entity.Id = 0;
-            InTransaction(() => _session.Save(entity));
-
-            return entity.Id;
+            _transaction.Commit();
+            _transaction = null;
         }
 
-        public void Delete(TDto dto)
+        public void Dispose()
         {
-            if (dto == null)
+            if (_transaction != null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                SaveChanges();
             }
-
-            var entity = Map(dto);
-            DeleteInternal(entity);
-        }
-
-        public void Delete(int id)
-        {
-            var entity = _session.Get<TEntity>(id);
-            DeleteInternal(entity);
-        }
-
-        public virtual int SaveChanges(TDto dto)
-        {
-            if (dto == null)
-            {
-                throw new ArgumentNullException(nameof(dto));
-            }
-
-            TEntity entity = _session.Load<TEntity>(dto.Id);
-            InTransaction(() =>
-            {
-                entity = Map(dto);
-                entity.ModificationDate = DateTime.UtcNow;
-                _session.Merge(entity);
-            });
-
-            return entity.Id;
-        }
-
-        private void DeleteInternal(TEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (!Attribute.IsDefined(entity.GetType(), typeof(DeletableEntityAttribute)))
-            {
-                throw new InvalidOperationException("This entity cannot be physically deleted.");
-            }
-            InTransaction(() => _session.Delete(entity));
-        }
-
-        private void InTransaction(Action action)
-        {
-            using (var transaction = _session.BeginTransaction())
-            {
-                action();
-                transaction.Commit();
-            }
-        }
-
-        private TEntity Map(TDto dto)
-        {
-            return Mapper.Map<TEntity>(dto);
         }
     }
 }
