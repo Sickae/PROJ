@@ -66,6 +66,7 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
 
                 if (result != null && result.Succeeded)
                 {
+                    await _signInManager.SignOutAsync();
                     await _signInManager.SignInAsync(user, true);
                     _logger.LogInformation("User logged in.");
 
