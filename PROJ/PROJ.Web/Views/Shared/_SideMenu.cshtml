@@ -1,0 +1,29 @@
+﻿@using PROJ.Logic.Identity.Managers
+
+@inject SignInManager SignInManager
+@inject IdentityUserManager IdentityUserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="side-menu">
+        <div class="side-menu-header"><a asp-controller="Home" asp-action="Dashboard">PROJ&trade;</a></div>
+        <div class="side-menu-actions">
+            <a asp-controller="Home" asp-action="Dashboard" class="menu-action">
+                <span class="fas fa-home"></span>
+                Home
+            </a>
+            <a href="#" class="menu-action">
+                <span class="fas fa-folder-open"></span>
+                Projects
+            </a>
+            <a href="#" class="menu-action">
+                <span class="fas fa-tree"></span>
+                Test
+            </a>
+        </div>
+        <div class="side-menu-footer">
+            <div class="menu-footer-user">@IdentityUserManager.GetUserName(User)</div>
+            <a asp-controller="User" asp-action="LogOut" class="menu-footer-logout menu-action">Logout</a>
+        </div>
+    </div>
+}

@@ -1,37 +1,83 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
+﻿html, body {
+    height: 100%;
+    background-color: #ECEFF1;
+}
+
 body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    display: flex;
+    flex-direction: row;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    flex-grow: 1;
+    padding: 15px 50px 0 50px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 250px;
+    background-color: #263238;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.side-menu-header {
     width: 100%;
+    text-align: center;
+    font-size: 28px;
+    border-bottom: 1px solid #37474F;
+    padding: 10px 0;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.side-menu-header > a {
+    color: #ECEFF1;
+    text-decoration: none;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.side-menu-footer {
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #37474F;
+    padding: 10px 0;
+}
+
+.menu-footer-user {
+    font-size: 28px;
+    color: #ECEFF1;
+}
+
+.menu-footer-logout {
+    font-size: 16px !important;
+}
+
+.side-menu-actions {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    padding-top: 20px;
+}
+
+.menu-action {
+    position: relative;
+    font-size: 20px;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.menu-action > span {
+    position: absolute;
+    left: -50px;
+    color: #CFD8DC !important;
+}
+
+a.menu-action {
+    color: #CFD8DC;
+    text-decoration: none;
+}
+
+a.menu-action:hover,
+a.menu-action:hover > span,
+a.menu-footer-logout:hover {
+    color: #80CBC4 !important;
 }

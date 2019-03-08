@@ -22,7 +22,7 @@ namespace PROJ.Web.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(HomeController.Dashboard), "Home");
         }
     }
 }

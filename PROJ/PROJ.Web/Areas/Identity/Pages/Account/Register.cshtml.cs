@@ -54,7 +54,7 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
                 if (result != null && result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true);
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return RedirectToAction(nameof(HomeController.Dashboard), "Home");
                 }
             }
 
