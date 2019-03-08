@@ -55,7 +55,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-    padding-top: 20px;
+    padding: 20px 0 0 25px;
 }
 
 .menu-action {
