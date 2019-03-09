@@ -70,7 +70,7 @@ namespace PROJ.Web
             services.ConfigureApplicationCookie(opt =>
             {
                 opt.Cookie.HttpOnly = true;
-                opt.ExpireTimeSpan = TimeSpan.FromHours(2);
+                opt.ExpireTimeSpan = TimeSpan.FromDays(365);
                 opt.LoginPath = "/Identity/Account/Login";
                 opt.LogoutPath = "/User/Logout";
                 opt.AccessDeniedPath = "/Identity/Account/AccessDenied";
