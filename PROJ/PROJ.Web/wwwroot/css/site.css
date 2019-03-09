@@ -1,4 +1,6 @@
-﻿html, body {
+﻿/* Body layout */
+
+html, body {
     height: 100%;
     background-color: #ECEFF1;
 }
@@ -10,8 +12,17 @@ body {
 
 .body-content {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.page-content {
+    flex-grow: 1;
     padding: 15px 50px 0 50px;
 }
+
+/* Side menu */
 
 .side-menu {
     display: flex;
@@ -80,4 +91,50 @@ a.menu-action:hover,
 a.menu-action:hover > span,
 a.menu-footer-logout:hover {
     color: #80CBC4 !important;
+}
+
+/* Cookie consent */
+
+.cookie-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: #546E7A;
+}
+
+.cookie-info {
+    color: #ECEFF1;
+    font-size: 18px;
+    margin-right: 100px;
+}
+
+.cookie-info > span {
+    color: #ECEFF1;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.cookie-footer button {
+    font-size: 16px;
+}
+
+/* Button */
+
+.btn-teal {
+    background-color: #009688;
+    color: #ECEFF1;
+    border-color: #00695C;
+}
+
+.btn-teal:hover {
+    background-color: #00897B;
+    color: #ECEFF1;
+    border-color: #00695C;
+}
+
+.btn-teal:focus {
+    color: #ECEFF1;
 }

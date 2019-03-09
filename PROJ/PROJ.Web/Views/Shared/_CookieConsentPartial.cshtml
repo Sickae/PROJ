@@ -8,7 +8,16 @@
 
 @if (showBanner)
 {
-    <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert">
+    <div id="cookieConsent" class="cookie-footer">
+        <span class="cookie-info">
+            <span class="fas fa-info-circle"></span>
+            This website uses cookies to ensure you get the best experience on our website.
+        </span>
+        <button type="button" class="btn btn-teal" data-cookie-string="@cookieString">Got it!</button>
+    </div>
+
+
+    @*<nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#cookieConsent .navbar-collapse">
@@ -29,7 +38,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav>*@
     <script>
         (function () {
             document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
