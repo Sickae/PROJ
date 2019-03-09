@@ -1,8 +1,7 @@
-﻿/* Body layout */
+/* Body layout */
 
 html, body {
     height: 100%;
-    background-color: #ECEFF1;
 }
 
 body {
@@ -30,7 +29,6 @@ body {
     align-items: center;
     height: 100%;
     width: 250px;
-    background-color: #263238;
 }
 
 .side-menu-header {
@@ -42,7 +40,6 @@ body {
 }
 
 .side-menu-header > a {
-    color: #ECEFF1;
     text-decoration: none;
 }
 
@@ -55,7 +52,6 @@ body {
 
 .menu-footer-user {
     font-size: 28px;
-    color: #ECEFF1;
 }
 
 .menu-footer-logout {
@@ -79,11 +75,9 @@ body {
 .menu-action > span {
     position: absolute;
     left: -50px;
-    color: #CFD8DC !important;
 }
 
 a.menu-action {
-    color: #CFD8DC;
     text-decoration: none;
 }
 
@@ -102,17 +96,14 @@ a.menu-footer-logout:hover {
     align-items: center;
     width: 100%;
     height: 70px;
-    background-color: #546E7A;
 }
 
 .cookie-info {
-    color: #ECEFF1;
     font-size: 18px;
     margin-right: 100px;
 }
 
 .cookie-info > span {
-    color: #ECEFF1;
     font-size: 24px;
     margin-right: 15px;
 }

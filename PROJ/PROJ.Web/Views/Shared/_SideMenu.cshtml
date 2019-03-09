@@ -5,25 +5,25 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="side-menu">
-        <div class="side-menu-header"><a asp-controller="Home" asp-action="Dashboard">PROJ&trade;</a></div>
+    <div class="side-menu bg-blue-grey-darken-4">
+        <div class="side-menu-header"><a asp-controller="Home" asp-action="Dashboard" class="color-blue-grey-lighten-5">PROJ&trade;</a></div>
         <div class="side-menu-actions">
-            <a asp-controller="Home" asp-action="Dashboard" class="menu-action">
+            <a asp-controller="Home" asp-action="Dashboard" class="menu-action color-blue-grey-lighten-4">
                 <span class="fas fa-home"></span>
                 Home
             </a>
-            <a href="#" class="menu-action">
+            <a href="#" class="menu-action color-blue-grey-lighten-4">
                 <span class="fas fa-folder-open"></span>
                 Projects
             </a>
-            <a href="#" class="menu-action">
+            <a href="#" class="menu-action color-blue-grey-lighten-4">
                 <span class="fas fa-tree"></span>
                 Test
             </a>
         </div>
         <div class="side-menu-footer">
-            <div class="menu-footer-user">@IdentityUserManager.GetUserName(User)</div>
-            <a asp-controller="User" asp-action="LogOut" class="menu-footer-logout menu-action">Logout</a>
+            <div class="menu-footer-user color-blue-grey-lighten-5">@IdentityUserManager.GetUserName(User)</div>
+            <a asp-controller="User" asp-action="LogOut" class="menu-footer-logout menu-action color-blue-grey-lighten-4">Logout</a>
         </div>
     </div>
 }

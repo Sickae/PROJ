@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Http.Features
 
 @{
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -8,8 +8,8 @@
 
 @if (showBanner)
 {
-    <div id="cookieConsent" class="cookie-footer">
-        <span class="cookie-info">
+    <div id="cookieConsent" class="cookie-footer bg-blue-grey-darken-1">
+        <span class="cookie-info color-blue-grey-lighten-5">
             <span class="fas fa-info-circle"></span>
             This website uses cookies to ensure you get the best experience on our website.
         </span>
