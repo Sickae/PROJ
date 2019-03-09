@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PROJ.Logic.Identity.Managers;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace PROJ.Web.Areas.Identity.Pages.Account
@@ -34,10 +35,13 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [DisplayName("Username")]
             public string Username { get; set; }
 
+            [DisplayName("Password")]
             public string Password { get; set; }
 
+            [DisplayName("Remember me")]
             public bool RememberMe { get; set; }
         }
 
@@ -67,7 +71,7 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
                 if (result != null && result.Succeeded)
                 {
                     await _signInManager.SignOutAsync();
-                    await _signInManager.SignInAsync(user, true);
+                    await _signInManager.SignInAsync(user, Input.RememberMe);
                     _logger.LogInformation("User logged in.");
 
                     user.LastLoginDate = DateTime.UtcNow;

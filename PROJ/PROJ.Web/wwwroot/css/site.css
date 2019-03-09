@@ -1,4 +1,4 @@
-/* Body layout */
+﻿/* Body layout */
 
 html, body {
     height: 100%;
@@ -13,12 +13,120 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .page-content {
     flex-grow: 1;
-    padding: 15px 50px 0 50px;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Form inputs/labels */
+
+.form-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #78909C;
+    background-color: inherit;
+    padding: 10px 0;
+}
+
+.form-input:focus {
+    border-bottom: 1px solid #4DB6AC;    
+}
+
+.form-label {
+    font-weight: initial;
+    margin: 0;
+}
+
+.form-checkbox {
+    display: none;
+}
+
+.form-checkbox-custom {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin: auto;
+    font-size: 18px;
+    background-color: #CFD8DC;
+    border-radius: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.form-checkbox-custom:hover::before {
+    position: absolute;
+    color: #80CBC4;
+    content: '\2714';
+    margin-left: 2px;
+    margin-top: -8px;
+}
+
+.form-checkbox-custom.checked::before {
+    position: absolute;
+    color: #4DB6AC;
+    content: '\2714';
+    margin-left: 2px;
+    margin-top: -8px;
+}
+
+.form-checkbox ~ label {
+    flex-grow: 1;
+}
+
+/* Flexbox */
+
+.flex {
+    display: flex;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+/* Buttons */
+
+.btn-teal {
+    background-color: #009688;
+    color: #ECEFF1;
+    border-color: #00695C;
+}
+
+.btn-teal:hover {
+    background-color: #00897B;
+    color: #ECEFF1;
+    border-color: #00695C;
+}
+
+.btn-teal:focus {
+    color: #ECEFF1;
+}
+
+.btn-teal-light {
+    background-color: #4DB6AC;
+    color: #ECEFF1;
+    border-color: #26A69A;
+}
+
+.btn-teal-light:hover {
+    background-color: #26A69A;
+    color: #ECEFF1;
+    border-color: #009688; 
+}
+
+.btn-teal-light:focus {
+    color: #ECEFF1;
 }
 
 /* Side menu */
@@ -112,20 +220,53 @@ a.menu-footer-logout:hover {
     font-size: 16px;
 }
 
-/* Button */
+/* Login page */
 
-.btn-teal {
-    background-color: #009688;
-    color: #ECEFF1;
-    border-color: #00695C;
+.page-login {
+    justify-content: center;
+    width: 600px;
+    font-size: 14px;
 }
 
-.btn-teal:hover {
-    background-color: #00897B;
-    color: #ECEFF1;
-    border-color: #00695C;
+.page-login .form-input {
+    font-weight: 700;
 }
 
-.btn-teal:focus {
-    color: #ECEFF1;
+.page-login .form-input::placeholder {
+    font-weight: initial;
+}
+
+.page-login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 5px;
+    padding: 10px 50px;
+    box-shadow: 1px 1px 5px 0 rgba(0,0,0,.3);
+}
+
+.page-login-form > h1 {
+    align-self: center;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.login-submit {
+    justify-content: center;
+    margin: 50px 0 30px 0;
+}
+
+.login-submit > button {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.login-link {
+    justify-content: center;
+    font-size: 12px;
+}
+
+.login-link > a {
+    margin-left: 5px;
 }
