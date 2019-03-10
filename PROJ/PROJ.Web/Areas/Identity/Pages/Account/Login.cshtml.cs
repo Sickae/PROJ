@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PROJ.Logic.Identity.Managers;
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace PROJ.Web.Areas.Identity.Pages.Account
@@ -36,9 +35,11 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [DisplayName("Username")]
+            [Required(ErrorMessage = "Username cannot be left blank.")]
             public string Username { get; set; }
 
             [DisplayName("Password")]
+            [Required(ErrorMessage = "Password cannot be left blank.")]
             public string Password { get; set; }
 
             [DisplayName("Remember me")]
@@ -53,8 +54,8 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
             }
 
             returnUrl = returnUrl ?? Url.Content("~/");
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            ReturnUrl = returnUrl;
+
+            await Task.Run(() => ReturnUrl = returnUrl);
         }
 
         [ValidateAntiForgeryToken]
@@ -65,6 +66,13 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _identityUserManager.FindByNameAsync(Input.Username);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Username or password is incorrect.");
+                    return Page();
+                }
+
                 var result = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, false);
                 await _identityUserManager.UpdateSecurityStampAsync(user);
 
@@ -78,6 +86,10 @@ namespace PROJ.Web.Areas.Identity.Pages.Account
                     await _identityUserManager.UpdateAsync(user);
 
                     return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Username or password is incorrect.");
                 }
             }
 

@@ -129,6 +129,32 @@ body {
     color: #ECEFF1;
 }
 
+/* Validation */
+
+.validation-error-summary {
+    color: #E53935;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.validation-error-summary > ul {
+    padding: 0;
+}
+
+.validation-error-summary li {
+    list-style: none;
+}
+
+.validation-error-message {
+    float: right;
+    color: #E53935;
+    margin-top: 5px;
+}
+
+.form-input-invalid {
+    border-color: #E53935;
+}
+
 /* Side menu */
 
 .side-menu {
