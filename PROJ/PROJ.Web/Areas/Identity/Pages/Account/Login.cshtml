@@ -14,7 +14,7 @@
         <h1>Login</h1>
         <div asp-validation-summary="ModelOnly" class="validation-error-summary"></div>
         <div class="form-group">
-            <input asp-for="Input.Username" class="form-input" placeholder="Username" autofocus="autofocus" />
+            <input asp-for="Input.Username" class="form-input" placeholder="Username" />
             <span asp-validation-for="Input.Username" class="validation-error-message"></span>
         </div>
         <div class="form-group">
@@ -27,6 +27,9 @@
         </div>
         <div class="form-group flex login-submit">
             <button type="submit" class="btn btn-teal">Login</button>
+        </div>
+        <div class="form-group flex loader-container">
+            <div class="loader"></div>
         </div>
         <div class="form-group flex login-link">
             Not registered?

@@ -10,3 +10,8 @@ $(document).on('click', '.form-checkbox-custom', function () {
 $(document).on('focusout', '.form-input[data-val]', function () {
     $(this).toggleClass('form-input-invalid', !$(this).valid());
 });
+
+$(document).on('submit', function (event) {
+    $('.loader').show();
+    event.currentTarget.hide();
+});

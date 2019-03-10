@@ -129,6 +129,24 @@ body {
     color: #ECEFF1;
 }
 
+/* Loader */
+
+.loader {
+    display: none;
+    height: 40px;
+    width: 40px;
+    border: 2px solid transparent;
+    border-top: 2px solid #4DB6AC;
+    border-bottom: 2px solid #4DB6AC;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* Validation */
 
 .validation-error-summary {
@@ -246,7 +264,7 @@ a.menu-footer-logout:hover {
     font-size: 16px;
 }
 
-/* Login page */
+/* Login/register page */
 
 .page-login {
     justify-content: center;
@@ -260,6 +278,10 @@ a.menu-footer-logout:hover {
 
 .page-login .form-input::placeholder {
     font-weight: initial;
+}
+
+.page-login .loader-container {
+    justify-content: center;
 }
 
 .page-login-form {

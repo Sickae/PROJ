@@ -4,26 +4,31 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <h4>Register</h4>
-            <hr />
-            <div asp-validation-summary="All" class="validation-error-message"></div>
-            <div class="form-group">
-                <label>Username</label>
-                <input asp-for="Input.Username" class="form-control" autofocus="autofocus" />
-                <span asp-validation-for="Input.Username" class="validation-error-message"></span>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="validation-error-message"></span>
-            </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-default">Register</button>
-            </div>
-        </form>
-    </div>
+<div class="page page-login">
+    <form method="post" class="page-login-form bg-white">
+        <h1>Register</h1>
+        <div asp-validation-summary="ModelOnly" class="validation-error-summary"></div>
+        <div class="form-group">
+            <input asp-for="Input.Username" class="form-input" placeholder="Username" />
+            <span asp-validation-for="Input.Username" class="validation-error-message"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Input.Password" type="password" class="form-input" placeholder="Password" />
+            <span asp-validation-for="Input.Password" class="validation-error-message"></span>
+        </div>
+        <div class="form-group flex login-submit">
+            <button type="submit" class="btn btn-teal">Register</button>
+        </div>
+        <div class="form-group flex loader-container">
+            <div class="loader"></div>
+        </div>
+        <div class="form-group flex login-link">
+            Already have an account?
+            <a asp-area="Identity" asp-page="/Account/Login">Login!</a>
+        </div>
+    </form>
 </div>
