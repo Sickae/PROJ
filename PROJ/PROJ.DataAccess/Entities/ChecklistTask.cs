@@ -4,6 +4,6 @@
     {
         public virtual string Name { get; set; }
 
-        public virtual bool IsComplete { get; set; }
+        public virtual bool IsCompleted { get; set; }
     }
 }

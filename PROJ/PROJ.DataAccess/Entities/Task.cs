@@ -20,5 +20,9 @@ namespace PROJ.DataAccess.Entities
         public virtual IEnumerable<Checklist> Checklists { get; set; }
 
         public virtual IEnumerable<Comment> Comments { get; set; }
+
+        public virtual TaskGroup TaskGroup { get; set; }
+
+        public virtual bool IsCompleted { get; set; }
     }
 }

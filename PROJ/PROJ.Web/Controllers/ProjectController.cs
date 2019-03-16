@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PROJ.Logic.DTOs;
-using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using PROJ.Web.Models;
@@ -14,13 +13,13 @@ namespace PROJ.Web.Controllers
     {
         private readonly ProjectRepository _projectRepository;
         private readonly IProjectManager _projectManager;
-        private readonly IAppContext _appContext;
+        private readonly ITaskGroupManager _taskGroupManager;
 
-        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, IAppContext appContext)
+        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, ITaskGroupManager taskGroupManager)
         {
             _projectRepository = projectRepository;
             _projectManager = projectManager;
-            _appContext = appContext;
+            _taskGroupManager = taskGroupManager;
         }
 
         public IActionResult Index()
@@ -31,6 +30,11 @@ namespace PROJ.Web.Controllers
 
         public IActionResult Create(string name)
         {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+            {
+                return Json(false);
+            }
+
             var project = new ProjectDTO { Name = name };
             _projectManager.Create(project);
 
@@ -51,6 +55,30 @@ namespace PROJ.Web.Controllers
             ViewBag.ActiveProjectId = vm.Id;
 
             return View(vm);
+        }
+
+        public IActionResult AddNewGroup(int projectId, string name)
+        {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+            {
+                return Json(false);
+            }
+
+            var project = _projectRepository.Get(projectId);
+
+            if (project == null)
+            {
+                return Json(false);
+            }
+
+            var group = new TaskGroupDTO
+            {
+                Name = name,
+                Project = project
+            };
+
+            _taskGroupManager.Create(group);
+            return Json(true);
         }
 
         private void FillViewBags()

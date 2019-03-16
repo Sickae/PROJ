@@ -5,11 +5,24 @@ $(document).on('click', '#add-project', function () {
     if (name.length === 0) {
         searchInput.focus();
     } else {
-        $.post('../../Project/Create', { name })
-            .done(function(data) {
-                if (data) {
-                    location.reload(true);
-                }
-            });
+        createProject(name);
     }
 });
+
+$(document).on('keydown', '#search-project', function (event) {
+    var name = $(this).val();
+    if (event.keyCode === 13 && name.length > 0) {
+        createProject(name);
+    }
+});
+
+function createProject(name) {
+    console.log(name);
+    $.post('../../Project/Create', { name })
+        .done(function(data) {
+            if (data) {
+                $('#search-project').val('');
+                location.reload();
+            }
+        });
+}

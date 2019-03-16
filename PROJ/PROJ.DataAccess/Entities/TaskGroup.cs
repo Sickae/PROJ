@@ -7,5 +7,7 @@ namespace PROJ.DataAccess.Entities
         public virtual string Name { get; set; }
 
         public virtual IEnumerable<Task> Tasks { get; set; }
+
+        public virtual Project Project { get; set; }
     }
 }

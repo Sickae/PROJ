@@ -15,7 +15,7 @@ namespace PROJ.Logic.UnitOfWork.Repositories
 
         public override ProjectDTO Get(int id)
         {
-            return _appContext.ProjectIds.Contains(id)
+            return _appContext.Projects.Any(x => x.Id == id)
                 ? base.Get(id)
                 : null;
         }

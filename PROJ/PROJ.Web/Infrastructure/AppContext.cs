@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PROJ.Logic.DTOs;
 using PROJ.Logic.Identity.Managers;
 using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PROJ.Web.Infrastructure
 {
@@ -18,7 +18,7 @@ namespace PROJ.Web.Infrastructure
             ? id
             : (int?)null;
 
-        public IEnumerable<int> ProjectIds => _projectRepository.Value.GetProjectsForCurrentUser().Select(x => x.Id);
+        public IList<ProjectDTO> Projects => _projectRepository.Value.GetProjectsForCurrentUser();
 
         public AppContext(IHttpContextAccessor httpContextAccessor, Lazy<IdentityUserManager> identityUserManager, Lazy<ProjectRepository> projectRepository)
         {

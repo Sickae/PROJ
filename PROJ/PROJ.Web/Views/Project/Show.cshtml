@@ -6,9 +6,68 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/project-functions.js"></script>
+    <script type="text/javascript" src="~/js/task-group-functions.js"></script>
+    <script type="text/javascript" src="~/js/task-functions.js"></script>
 }
+
+@Html.HiddenFor(x => x.Id)
 
 <partial name="_List" />
 
-<h2>Show</h2>
+<div class="sub-menu-page">
+    <div class="project-header">
+        @Model.Name
+        <div class="project-icon">
+            <span class="fas fa-pen" title="Rename project"></span>
+        </div>
+        <div class="project-icon">
+            <span class="fas fa-user-plus" title="Assign user"></span>
+        </div>
+        <div class="project-icon destructive">
+            <span class="fas fa-trash" title="Delete project"></span>
+        </div>
+    </div>
 
+    <div class="task-groups-container">
+        @foreach (var group in Model.TaskGroups)
+        {
+            <div class="task-group" data-id="@group.Id">
+                <div class="task-group-header">
+                    <span>@group.Name</span>
+                    <span>&ensp;&mdash;&ensp;@group.Tasks.Count tasks</span>
+                    <span class="fas fa-angle-up toggle-task-group"></span>
+                </div>
+
+                <div class="tasks-container">
+                    @foreach (var task in group.Tasks)
+                    {
+                        var isCompletedClass = task.IsCompleted ? "completed" : "";
+                        var isCompletedCheck = task.IsCompleted ? "checked" : "";
+                        <div class="task @isCompletedClass">
+                            <input type="checkbox" class="form-checkbox" @isCompletedCheck />
+                            <span>@task.Name</span>
+                        </div>
+                    }
+
+                    <div class="task new-task">
+                        <input class="form-input" placeholder="Task Name" />
+                    </div>
+
+                    <div id="add-task" class="add-link">
+                        <span class="fas fa-plus"></span>
+                        &ensp;Add Task
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="task-group new-group">
+            <input class="form-input" placeholder="Task Group Name" />
+        </div>
+
+        <div id="add-task-group" class="add-link">
+            <span class="fas fa-plus"></span>
+            &nbsp; Add Task Group
+        </div>
+    </div>
+</div>

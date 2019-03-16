@@ -22,7 +22,7 @@
         {
             var active = activeId == project.Id ? "active" : "";
             <a class="side-sub-menu-action color-blue-grey-darken-3 @active" href="@Url.Action(nameof(ProjectController.Show), "Project", new { id = project.Id })">
-                <span>@project.Name (@project.Id)</span>
+                <span>@project.Name</span>
                 <span>@project.Users.Count people</span>
             </a>
         }

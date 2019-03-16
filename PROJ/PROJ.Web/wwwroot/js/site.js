@@ -1,5 +1,8 @@
-$(document).ready(function () {
-    $('.form-checkbox').before('<div class="form-checkbox-custom">');
+﻿$(document).ready(function () {
+    $('.form-checkbox').each(function () {
+        var isChecked = $(this).is(':checked') ? 'checked' : '';
+        $(this).before('<div class="form-checkbox-custom ' + isChecked + '">');
+    });
 });
 
 $(document).on('click', '.form-checkbox-custom', function () {

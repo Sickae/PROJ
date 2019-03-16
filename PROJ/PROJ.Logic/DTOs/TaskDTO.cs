@@ -18,5 +18,9 @@ namespace PROJ.Logic.DTOs
         public IList<ChecklistDTO> Checklists { get; set; }
 
         public IList<CommentDTO> Comments { get; set; }
+
+        public TaskGroupDTO TaskGroup { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }
