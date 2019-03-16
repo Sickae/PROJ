@@ -7,5 +7,9 @@ namespace PROJ.Logic.DTOs
         public string Name { get; set; }
 
         public IList<TaskGroupDTO> TaskGroups { get; set; }
+
+        public UserDTO Owner { get; set; }
+
+        public IList<UserDTO> Users { get; set; }
     }
 }

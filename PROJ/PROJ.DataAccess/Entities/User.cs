@@ -26,5 +26,7 @@ namespace PROJ.DataAccess.Entities
         public virtual DateTime? LastLoginDate { get; set; }
 
         public virtual IList<UserClaim> UserClaims { get; set; }
+
+        public virtual IList<Project> Projects { get; set; }
     }
 }

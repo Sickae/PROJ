@@ -1,0 +1,30 @@
+﻿@using PROJ.Logic.DTOs
+
+@{ 
+    var activeId = ViewBag.ActiveProjectId != null ? (int)ViewBag.ActiveProjectId : 0;
+}
+
+<div class="side-menu side-menu-sub bg-blue-grey-lighten-4">
+    <div class="side-menu-sub-header">
+        <div class="side-menu-sub-header-top">
+            <input id="search-project" class="form-input" placeholder="Search / Add Project" />
+        </div>
+        <div class="side-menu-sub-header-bottom">
+            <span>Projects (@ViewBag.ProjectsList.Count)</span>
+            <a id="add-project">
+                <span class="fas fa-plus"></span>
+                &nbsp;Add Project
+            </a>
+        </div>
+    </div>
+    <div class="side-sub-menu-actions">
+        @foreach (var project in ViewBag.ProjectsList as IList<ProjectDTO>)
+        {
+            var active = activeId == project.Id ? "active" : "";
+            <a class="side-sub-menu-action color-blue-grey-darken-3 @active" href="@Url.Action(nameof(ProjectController.Show), "Project", new { id = project.Id })">
+                <span>@project.Name (@project.Id)</span>
+                <span>@project.Users.Count people</span>
+            </a>
+        }
+    </div>
+</div>

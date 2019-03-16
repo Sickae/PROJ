@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     $('.form-checkbox').before('<div class="form-checkbox-custom">');
 });
 
@@ -13,5 +13,4 @@ $(document).on('focusout', '.form-input[data-val]', function () {
 
 $(document).on('submit', function (event) {
     $('.loader').show();
-    event.currentTarget.hide();
 });

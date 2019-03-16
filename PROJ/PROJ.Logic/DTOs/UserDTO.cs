@@ -20,5 +20,7 @@ namespace PROJ.Logic.DTOs
         public DateTime? LastLoginDate { get; set; }
 
         public IList<UserClaimDTO> UserClaims { get; set; }
+
+        public IList<ProjectDTO> Projects { get; set; }
     }
 }

@@ -86,7 +86,9 @@ namespace PROJ.Web
             services.AddScoped<AppIdentityStore>();
             services.AddScoped<AppIdentityErrorDescriber>();
 
+            // Lazy services
             services.AddScoped(provider => new Lazy<IdentityUserManager>(() => provider.GetService<IdentityUserManager>()));
+            services.AddScoped(provider => new Lazy<ProjectRepository>(() => provider.GetService<ProjectRepository>()));
 
             // Repositories
             services.AddScoped<UserRepository>();

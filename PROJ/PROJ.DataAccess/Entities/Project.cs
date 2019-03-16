@@ -6,6 +6,10 @@ namespace PROJ.DataAccess.Entities
     {
         public virtual string Name { get; set; }
 
-        public virtual IEnumerable<TaskGroup> TaskGroups { get; set; }
+        public virtual IList<TaskGroup> TaskGroups { get; set; }
+
+        public virtual User Owner { get; set; }
+
+        public virtual IList<User> Users { get; set; }
     }
 }

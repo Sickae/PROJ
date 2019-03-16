@@ -2,13 +2,14 @@
 using NHibernate;
 using PROJ.DataAccess.Entities;
 using PROJ.Logic.DTOs;
+using PROJ.Logic.Interfaces;
 using System.Collections.Generic;
 
 namespace PROJ.Logic.UnitOfWork.Repositories
 {
     public class UserRepository : Repository<User, UserDTO>
     {
-        public UserRepository(ISession session) : base(session)
+        public UserRepository(ISession session, IAppContext appContext) : base(session, appContext)
         { }
 
         public IList<UserDTO> GetByClaim(string claimType, string claimValue)
