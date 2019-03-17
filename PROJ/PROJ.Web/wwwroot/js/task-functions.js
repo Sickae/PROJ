@@ -63,6 +63,12 @@ $(document).on('click', '#task-delete', function() {
         });
 });
 
+$(document).on('change', '#complete-task:checkbox', function () {
+    var taskId = $(this).closest('.task').data('id');
+    var state = $(this).is(':checked');
+    completeTask(taskId, state);
+});
+
 function sendNewTask(groupId, name) {
     $('.task-group[data-id=' + groupId + ']').find('.loader').last().show();
     $.post('../../TaskGroup/AddNewTask', {
@@ -96,4 +102,16 @@ function deleteTask(taskId) {
                 location.reload();
             }
         });
-} 
+}
+
+function completeTask(taskId, state) {
+    $('.task[data-id=' + taskId + '] > .loader').show();
+    $.post('../../Task/ToggleComplete', {
+        taskId,
+        state
+    }).done(function(data) {
+            if (data) {
+                location.reload();
+            }
+        });
+}

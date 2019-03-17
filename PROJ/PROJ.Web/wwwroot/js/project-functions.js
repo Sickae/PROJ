@@ -43,6 +43,15 @@ $(document).on('click', '#project-delete', function () {
         });
 });
 
+$(document).on('click', '#project-toggle-completed', function () {
+    var tasks = $('.task.completed');
+    if (tasks.filter((idx, obj) => !$(obj).is(':hidden')).length > 0) {
+        tasks.hide();
+    } else {
+        tasks.show();
+    }
+})
+
 function createProject(name) {
     $.post('../../Project/Create', { name })
         .done(function(data) {

@@ -52,5 +52,20 @@ namespace PROJ.Web.Controllers
 
             return Json(true);
         }
+
+        public IActionResult ToggleComplete(int taskId, bool state)
+        {
+            var task = _taskRepository.Get(taskId);
+
+            if (task == null)
+            {
+                return Json(false);
+            }
+
+            task.IsCompleted = state;
+            _taskManager.Save(task);
+
+            return Json(true);
+        }
     }
 }

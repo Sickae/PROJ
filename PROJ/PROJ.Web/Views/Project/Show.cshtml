@@ -24,6 +24,9 @@
             <div class="icon">
                 <span class="fas fa-user-plus" title="Assign User"></span>
             </div>
+            <div id="project-toggle-completed" class="icon">
+                <span class="fas fa-check-double" title="Show/Hide All Completed Tasks"></span>
+            </div>
             <div id="project-delete" class="icon destructive">
                 <span class="fas fa-trash" title="Delete Project"></span>
             </div>
@@ -39,6 +42,9 @@
                     <span>&ensp;&mdash;&ensp;@group.Tasks.Count @(group.Tasks.Count == 1 ? "task" : "tasks")</span>
                     <div class="loader loader-small"></div>
                     <div class="icons-container">
+                        <div id="task-group-toggle-completed" class="icon">
+                            <span class="fas fa-check" title="Show/Hide Completed Tasks"></span>
+                        </div>
                         <div id="task-group-delete" class="icon destructive">
                             <span class="fas fa-trash" title="Delete Task Group"></span>
                         </div>
@@ -52,7 +58,7 @@
                         var isCompletedClass = task.IsCompleted ? "completed" : "";
                         var isCompletedCheck = task.IsCompleted ? "checked" : "";
                         <div class="task @isCompletedClass" data-id="@task.Id">
-                            <input type="checkbox" class="form-checkbox" @isCompletedCheck />
+                            <input id="complete-task" type="checkbox" class="form-checkbox" @isCompletedCheck />
                             <div class="priority">
                                 @switch (task.Priority)
                                 {

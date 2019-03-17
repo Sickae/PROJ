@@ -76,6 +76,10 @@ $(document).on('click', '#task-group-delete', function () {
         });
 });
 
+$(document).on('click', '#task-group-toggle-completed', function () {
+    $(this).closest('.task-group').find('.task.completed').toggle();
+});
+
 function sendNewGroup(projectId, name) {
     $('.task-groups-container').children('.loader').show();
     $.post('../../Project/AddNewGroup', {
