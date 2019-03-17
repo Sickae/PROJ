@@ -121,6 +121,72 @@ body a {
     transform: translate(2px, -8px);
 }
 
+/* Dialog Box */
+
+.overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.1);
+    z-index: 999;
+}
+
+.dialog-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: space-between;
+    position: fixed;
+    min-width: 400px;
+    max-width: 600px;
+    min-height: 200px;
+    word-wrap: break-word;
+    background-color: #ECEFF1;
+    border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 1px 1px 5px 0 rgba(96, 125, 139, .3);
+    z-index: 1000;
+}
+
+.dialog-box-header {
+    flex-basis: 100%;
+    display: flex;
+    background-color: rgba(217, 216, 220, .2);
+    border-bottom: 1px solid #CFD8DC;
+    padding: 10px;
+}
+
+.dialog-box-header > .icon > span:hover {
+    color: #263238;
+}
+
+.dialog-box-title {
+    font-weight: 700;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.dialog-box-body {
+    flex-basis: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.dialog-box-footer {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.dialog-box-footer > * {
+    margin: 0 10px;
+    min-width: 100px;
+}
+
 /* Flexbox */
 
 .flex {
@@ -155,15 +221,15 @@ body a {
 }
 
 .btn-teal-light {
-    background-color: #4DB6AC;
+    background-color: #00BFA5;
     color: #ECEFF1;
     border-color: #26A69A;
 }
 
 .btn-teal-light:hover {
-    background-color: #26A69A;
+    background-color: #00dca5;
     color: #ECEFF1;
-    border-color: #009688; 
+    border-color: #00BFA5; 
 }
 
 .btn-teal-light:focus {
@@ -486,6 +552,14 @@ a.side-sub-menu-action:hover {
     color: #90A4AE;
     font-size: 12px;
     margin-left: 5px;
+}
+
+.icon-large {
+    font-size: 16px;
+}
+
+.icon-static {
+    display: block;
 }
 
 .icon:first-child {

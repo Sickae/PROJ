@@ -35,6 +35,14 @@ $(document).on('keydown', '#project-name', function (event) {
     }
 });
 
+$(document).on('click', '#project-delete', function () {
+    dialog('Delete Project', 'Are you sure you want to delete this project?',
+        'Yes', 'No', function () {
+            var projectId = $('#Id').val();
+            deleteProject(projectId);
+        });
+});
+
 function createProject(name) {
     $.post('../../Project/Create', { name })
         .done(function(data) {
@@ -55,4 +63,13 @@ function renameProject(projectId, name) {
             location.reload();
         }
     })
+}
+
+function deleteProject(projectId) {
+    $.post('../../Project/Delete', { projectId })
+        .done(function (data) {
+            if (data.success) {
+                location.replace(data.redirectUrl);
+            }
+        });
 }

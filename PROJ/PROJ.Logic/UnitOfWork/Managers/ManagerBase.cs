@@ -40,14 +40,12 @@ namespace PROJ.Logic.UnitOfWork.Managers
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            var entity = Map(dto);
-            DeleteInternal(entity);
+            DeleteInternal(dto.Id);
         }
 
         public void Delete(int id)
         {
-            var entity = _session.Get<TEntity>(id);
-            DeleteInternal(entity);
+            DeleteInternal(id);
         }
 
         public virtual int Save(TDto dto)
@@ -70,18 +68,22 @@ namespace PROJ.Logic.UnitOfWork.Managers
             return entity.Id;
         }
 
-        private void DeleteInternal(TEntity entity)
+        private void DeleteInternal(int id)
         {
-            if (entity == null)
+            //if (Attribute.IsDefined(entity.GetType(), typeof(DeletableEntityAttribute)))
+            //{
+            //    _unitOfWork.UseTransaction(() => _session.Delete(entity));
+            //}
+            //else
+            //{
+            //    entity.IsDeleted = true;
+            //    SaveInternal(entity);
+            //}
+            _unitOfWork.UseTransaction(() =>
             {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (!Attribute.IsDefined(entity.GetType(), typeof(DeletableEntityAttribute)))
-            {
-                throw new InvalidOperationException("This entity cannot be physically deleted.");
-            }
-            _unitOfWork.UseTransaction(() => _session.Delete(entity));
+                var entity = _session.Load<TEntity>(id);
+                _session.Delete(entity);
+            });
         }
 
         private int SaveInternal(TEntity entity)

@@ -101,6 +101,25 @@ namespace PROJ.Web.Controllers
             return Json(true);
         }
 
+        public IActionResult Delete(int projectId)
+        {
+            var project = _projectRepository.Get(projectId);
+
+            if (project == null)
+            {
+                return Json(new { success = false });
+            }
+
+            _projectManager.Delete(project);
+            var redirectUrl = Url.Action(nameof(Index), "Project");
+
+            return Json(new
+            {
+                success = true,
+                redirectUrl
+            });
+        }
+
         private void FillViewBags()
         {
             ViewBag.ProjectsList = _projectRepository.GetProjectsForCurrentUser();
