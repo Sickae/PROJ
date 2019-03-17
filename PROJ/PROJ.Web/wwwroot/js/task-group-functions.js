@@ -47,7 +47,28 @@ $(document).on('keydown', '.new-group > input', function (event) {
     }
 });
 
+$(document).on('focusout', '#task-group-name', function () {
+    var name = $(this).text();
+    if (name.length > 0 && name !== $(this).data('original-name')) {
+        var groupId = $(this).closest('.task-group').data('id');
+        renameGroup(groupId, name);
+    }
+});
+
+$(document).on('keydown', '#task-group-name', function (event) {
+    if (event.keyCode === 13) {
+        console.log('Hi');
+        event.preventDefault();
+        if ($(this).text().length > 0) {
+            $(this).blur();
+        }
+    } else if (event.keyCode === 27) {
+        $(this).text($(this).data('original-name')).blur();
+    }
+})
+
 function sendNewGroup(projectId, name) {
+    $('.task-groups-container').children('.loader').show();
     $.post('../../Project/AddNewGroup', {
         projectId,
         name
@@ -57,4 +78,16 @@ function sendNewGroup(projectId, name) {
             location.reload();
         }
     });
+}
+
+function renameGroup(groupId, name) {
+    $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader').show();
+    $.post('../../TaskGroup/Rename', {
+        groupId,
+        name
+    }).done(function(data) {
+        if (data) {
+            location.reload();
+        }
+    })
 }

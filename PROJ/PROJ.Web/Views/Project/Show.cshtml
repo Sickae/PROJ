@@ -1,4 +1,6 @@
-﻿@model ProjectViewModel
+﻿@using PROJ.Shared.Enums
+
+@model ProjectViewModel
 
 @{
     ViewData["Title"] = Model.Name;
@@ -16,38 +18,80 @@
 
 <div class="sub-menu-page">
     <div class="project-header">
-        @Model.Name
-        <div class="project-icon">
-            <span class="fas fa-pen" title="Rename project"></span>
-        </div>
-        <div class="project-icon">
-            <span class="fas fa-user-plus" title="Assign user"></span>
-        </div>
-        <div class="project-icon destructive">
-            <span class="fas fa-trash" title="Delete project"></span>
+        <span id="project-name" contenteditable="true" spellcheck="false" data-original-name="@Model.Name">@Model.Name</span>
+        <div class="loader loader-small"></div>
+        <div class="icons-container">
+            <div class="icon">
+                <span class="fas fa-user-plus" title="Assign User"></span>
+            </div>
+            <div class="icon destructive">
+                <span class="fas fa-trash" title="Delete Project"></span>
+            </div>
         </div>
     </div>
 
     <div class="task-groups-container">
-        @foreach (var group in Model.TaskGroups)
+        @foreach (var group in Model.TaskGroups.OrderBy(x => x.Id))
         {
             <div class="task-group" data-id="@group.Id">
                 <div class="task-group-header">
-                    <span>@group.Name</span>
-                    <span>&ensp;&mdash;&ensp;@group.Tasks.Count tasks</span>
+                    <span id="task-group-name" contenteditable="true" spellcheck="false" data-original-name="@group.Name">@group.Name</span>
+                    <span>&ensp;&mdash;&ensp;@group.Tasks.Count @(group.Tasks.Count == 1 ? "task" : "tasks")</span>
+                    <div class="loader loader-small"></div>
+                    <div class="icons-container">
+                        <div class="icon destructive">
+                            <span class="fas fa-trash" title="Delete Task Group"></span>
+                        </div>
+                    </div>
                     <span class="fas fa-angle-up toggle-task-group"></span>
                 </div>
 
                 <div class="tasks-container">
-                    @foreach (var task in group.Tasks)
+                    @foreach (var task in group.Tasks.OrderBy(x => x.Id))
                     {
                         var isCompletedClass = task.IsCompleted ? "completed" : "";
                         var isCompletedCheck = task.IsCompleted ? "checked" : "";
-                        <div class="task @isCompletedClass">
+                        <div class="task @isCompletedClass" data-id="@task.Id">
                             <input type="checkbox" class="form-checkbox" @isCompletedCheck />
-                            <span>@task.Name</span>
+                            <div class="priority">
+                                @switch (task.Priority)
+                                {
+                                    case Priority.Low:
+                                    {
+                                        <span class="fas fa-angle-down priority-low"></span>
+                                        break;
+                                    }
+                                    case Priority.High:
+                                    {
+                                        <span class="fas fa-angle-up priority-high"></span>
+                                        break;
+                                    }
+                                    case Priority.Critical:
+                                    {
+                                        <span class="fas fa-exclamation priority-critical"></span>
+                                        break;
+                                    }
+                                    case Priority.Normal:
+                                    default: break;
+                                }
+                            </div>
+                            <span id="task-name" contenteditable="true" spellcheck="false" data-original-name="@task.Name">@task.Name</span>
+                            <div class="loader loader-small"></div>
+                            <div class="icons-container">
+                                <div class="icon">
+                                    <span class="fas fa-clipboard" title="Details"></span>
+                                </div>
+                                <div class="icon">
+                                    <span class="fas fa-exclamation" title="Set Priority"></span>
+                                </div>
+                                <div class="icon destructive">
+                                    <span class="fas fa-trash" title="Delete Task"></span>
+                                </div>
+                            </div>
                         </div>
                     }
+
+                    <div class="loader loader-small"></div>
 
                     <div class="task new-task">
                         <input class="form-input" placeholder="Task Name" />
@@ -60,6 +104,8 @@
                 </div>
             </div>
         }
+
+        <div class="loader loader-medium"></div>
 
         <div class="task-group new-group">
             <input class="form-input" placeholder="Task Group Name" />

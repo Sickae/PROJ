@@ -2,9 +2,9 @@
 {
     public enum Priority
     {
-        Critical,
-        High,
         Normal,
-        Low
+        Low,
+        High,
+        Critical
     }
 }

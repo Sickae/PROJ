@@ -81,6 +81,26 @@ namespace PROJ.Web.Controllers
             return Json(true);
         }
 
+        public IActionResult Rename(int projectId, string name)
+        {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+            {
+                return Json(false);
+            }
+
+            var project = _projectRepository.Get(projectId);
+
+            if (project == null)
+            {
+                return Json(false);
+            }
+
+            project.Name = name;
+            _projectManager.Save(project);
+
+            return Json(true);
+        }
+
         private void FillViewBags()
         {
             ViewBag.ProjectsList = _projectRepository.GetProjectsForCurrentUser();

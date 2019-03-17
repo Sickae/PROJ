@@ -57,7 +57,6 @@ namespace PROJ.Logic.UnitOfWork.Managers
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            //TEntity entity = _session.Load<TEntity>(dto.Id);
             var entity = Map(dto);
 
             return SaveInternal(entity);

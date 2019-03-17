@@ -18,12 +18,12 @@
         </div>
     </div>
     <div class="side-sub-menu-actions">
-        @foreach (var project in ViewBag.ProjectsList as IList<ProjectDTO>)
+        @foreach (var project in (ViewBag.ProjectsList as IList<ProjectDTO>).OrderBy(x => x.Id))
         {
             var active = activeId == project.Id ? "active" : "";
             <a class="side-sub-menu-action color-blue-grey-darken-3 @active" href="@Url.Action(nameof(ProjectController.Show), "Project", new { id = project.Id })">
                 <span>@project.Name</span>
-                <span>@project.Users.Count people</span>
+                <span>@project.Users.Count @(project.Users.Count == 1 ? "person" : "people")</span>
             </a>
         }
     </div>

@@ -35,7 +35,27 @@ $(document).on('keydown', '.new-task > input', function (event) {
     }
 });
 
+$(document).on('focusout', '#task-name', function () {
+    var name = $(this).text();
+    if (name.length > 0 && name !== $(this).data('original-name')) {
+        var taskId = $(this).closest('.task').data('id');
+        renameTask(taskId, name);
+    }
+});
+
+$(document).on('keydown', '#task-name', function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        if ($(this).text().length > 0) {
+            $(this).blur();
+        }
+    } else if (event.keyCode === 27) {
+        $(this).text($(this).data('original-name')).blur();
+    }
+});
+
 function sendNewTask(groupId, name) {
+    $('.task-group[data-id=' + groupId + ']').find('.loader').last().show();
     $.post('../../TaskGroup/AddNewTask', {
         groupId,
         name
@@ -44,5 +64,17 @@ function sendNewTask(groupId, name) {
             $('.new-task > input').val('');
             location.reload();
         }
-    })
+    });
+}
+
+function renameTask(taskId, name) {
+    $('.task[data-id=' + taskId + '] > .loader').show();
+    $.post('../../Task/Rename', {
+        taskId,
+        name
+    }).done(function(data) {
+        if (data) {
+            location.reload();
+        }
+    });
 }
