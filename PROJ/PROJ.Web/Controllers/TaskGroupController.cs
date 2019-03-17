@@ -65,5 +65,19 @@ namespace PROJ.Web.Controllers
 
             return Json(true);
         }
+
+        public IActionResult Delete(int groupId)
+        {
+            var group = _taskGroupRepository.Get(groupId);
+
+            if (group == null)
+            {
+                return Json(false);
+            }
+
+            _taskGroupManager.Delete(groupId);
+
+            return Json(true);
+        }
     }
 }

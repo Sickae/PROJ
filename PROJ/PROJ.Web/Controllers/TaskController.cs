@@ -38,5 +38,19 @@ namespace PROJ.Web.Controllers
 
             return Json(true);
         }
+
+        public IActionResult Delete(int taskId)
+        {
+            var task = _taskRepository.Get(taskId);
+
+            if (task == null)
+            {
+                return Json(false);
+            }
+
+            _taskManager.Delete(task);
+
+            return Json(true);
+        }
     }
 }

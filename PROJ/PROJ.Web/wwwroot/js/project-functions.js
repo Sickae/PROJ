@@ -66,6 +66,7 @@ function renameProject(projectId, name) {
 }
 
 function deleteProject(projectId) {
+    $('.project-header > .loader').show();
     $.post('../../Project/Delete', { projectId })
         .done(function (data) {
             if (data.success) {

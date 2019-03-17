@@ -54,6 +54,15 @@ $(document).on('keydown', '#task-name', function (event) {
     }
 });
 
+$(document).on('click', '#task-delete', function() {
+    var $this = $(this);
+    dialog('Task Delete', 'Are you sure you want to delete this task?',
+        'Yes', 'No', function () {
+            var taskId = $this.closest('.task').data('id');
+            deleteTask(taskId);
+        });
+});
+
 function sendNewTask(groupId, name) {
     $('.task-group[data-id=' + groupId + ']').find('.loader').last().show();
     $.post('../../TaskGroup/AddNewTask', {
@@ -78,3 +87,13 @@ function renameTask(taskId, name) {
         }
     });
 }
+
+function deleteTask(taskId) {
+    $('.task[data-id=' + taskId + '] > .loader').show();
+    $.post('../../Task/Delete', { taskId })
+        .done(function(data) {
+            if (data) {
+                location.reload();
+            }
+        });
+} 

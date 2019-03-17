@@ -65,7 +65,16 @@ $(document).on('keydown', '#task-group-name', function (event) {
     } else if (event.keyCode === 27) {
         $(this).text($(this).data('original-name')).blur();
     }
-})
+});
+
+$(document).on('click', '#task-group-delete', function () {
+    var $this = $(this);
+    dialog('Delete Task Group', 'Are you sure you want to delete this group?\nAll tasks will be removed as well!',
+        'Yes', 'No', function () {
+            var groupId = $this.closest('.task-group').data('id');
+            deleteGroup(groupId);
+        });
+});
 
 function sendNewGroup(projectId, name) {
     $('.task-groups-container').children('.loader').show();
@@ -90,4 +99,14 @@ function renameGroup(groupId, name) {
             location.reload();
         }
     })
+}
+
+function deleteGroup(groupId) {
+    $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader').show();
+    $.post('../../TaskGroup/Delete', { groupId })
+        .done(function(data) {
+            if (data) {
+                location.reload();
+            }
+        });
 }

@@ -39,7 +39,7 @@
                     <span>&ensp;&mdash;&ensp;@group.Tasks.Count @(group.Tasks.Count == 1 ? "task" : "tasks")</span>
                     <div class="loader loader-small"></div>
                     <div class="icons-container">
-                        <div class="icon destructive">
+                        <div id="task-group-delete" class="icon destructive">
                             <span class="fas fa-trash" title="Delete Task Group"></span>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                 <div class="icon">
                                     <span class="fas fa-exclamation" title="Set Priority"></span>
                                 </div>
-                                <div class="icon destructive">
+                                <div id="task-delete" class="icon destructive">
                                     <span class="fas fa-trash" title="Delete Task"></span>
                                 </div>
                             </div>
