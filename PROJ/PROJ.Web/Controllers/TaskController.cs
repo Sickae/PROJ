@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
+using PROJ.Shared.Enums;
 
 namespace PROJ.Web.Controllers
 {
@@ -63,6 +64,21 @@ namespace PROJ.Web.Controllers
             }
 
             task.IsCompleted = state;
+            _taskManager.Save(task);
+
+            return Json(true);
+        }
+
+        public IActionResult SetPriority(int taskId, Priority priority)
+        {
+            var task = _taskRepository.Get(taskId);
+
+            if (task == null)
+            {
+                return Json(false);
+            }
+
+            task.Priority = priority;
             _taskManager.Save(task);
 
             return Json(true);

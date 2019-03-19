@@ -87,8 +87,20 @@
                                 <div class="icon">
                                     <span class="fas fa-clipboard" title="Details"></span>
                                 </div>
-                                <div class="icon">
+                                <div id="task-toggle-priority" class="icon">
                                     <span class="fas fa-exclamation" title="Set Priority"></span>
+                                    <div class="priority-icon priority-icon-low" data-priority="@Priority.Low">
+                                        <span class="fas fa-angle-down" title="Low Priority"></span>
+                                    </div>
+                                    <div class="priority-icon priority-icon-normal" data-priority="@Priority.Normal">
+                                        <span class="fas fa-minus" title="Normal Priority"></span>
+                                    </div>
+                                    <div class="priority-icon priority-icon-high" data-priority="@Priority.High">
+                                        <span class="fas fa-angle-up" title="High priority"></span>
+                                    </div>
+                                    <div class="priority-icon priority-icon-critical" data-priority="@Priority.Critical">
+                                        <span class="fas fa-exclamation" title="Critical Priority"></span>
+                                    </div>
                                 </div>
                                 <div id="task-delete" class="icon destructive">
                                     <span class="fas fa-trash" title="Delete Task"></span>

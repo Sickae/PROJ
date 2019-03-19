@@ -690,10 +690,36 @@ a.side-sub-menu-action:hover {
     color: #78909C;
 }
 
+.priority-icon-low:hover {
+    color: #78909C;
+}
+
+.priority-icon-normal:hover {
+    color: #4DB6AC;
+}
+
 .priority-high {
+    color: #FF7043;
+}
+
+.priority-icon-high:hover {
     color: #FF7043;
 }
 
 .priority-critical {
     color: #E53935;
+}
+
+.priority-icon-critical:hover {
+    color: #E53935;
+}
+
+.priority-icon {
+    display: none;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.priority-icon:first-of-type {
+    margin-left: 0;
 }

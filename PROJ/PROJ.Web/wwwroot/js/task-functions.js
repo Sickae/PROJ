@@ -69,6 +69,22 @@ $(document).on('change', '#complete-task:checkbox', function () {
     completeTask(taskId, state);
 });
 
+$(document).on('click', '#task-toggle-priority', function () {
+    $(this).children('span').hide();
+    $(this).find('.priority-icon').css('display', 'inline-block');
+});
+
+$(document).on('mouseleave', '#task-toggle-priority', function () {
+    $(this).find('.priority-icon').hide();
+    $(this).children('span').show();
+});
+
+$(document).on('click', '.priority-icon', function () {
+    var taskId = $(this).closest('.task').data('id');
+    var priority = $(this).data('priority');
+    setPriority(taskId, priority);
+});
+
 function sendNewTask(groupId, name) {
     $('.task-group[data-id=' + groupId + ']').find('.loader').last().show();
     $.post('../../TaskGroup/AddNewTask', {
@@ -114,4 +130,16 @@ function completeTask(taskId, state) {
                 location.reload();
             }
         });
+}
+
+function setPriority(taskId, priority) {
+    $('.task[data-id=' + taskId + '] > .loader').show();
+    $.post('../../Task/SetPriority', {
+        taskId,
+        priority
+    }).done(function(data) {
+        if (data) {
+            location.reload();
+        }
+    });
 }
