@@ -17,13 +17,10 @@
 <partial name="_List" />
 
 <div class="sub-menu-page">
-    <div class="project-header">
+    <div class="page-header">
         <span id="project-name" contenteditable="true" spellcheck="false" data-original-name="@Model.Name">@Model.Name</span>
         <div class="loader loader-small"></div>
         <div class="icons-container">
-            <div class="icon">
-                <span class="fas fa-user-plus" title="Assign User"></span>
-            </div>
             <div id="project-toggle-completed" class="icon">
                 <span class="fas fa-check-double" title="Show/Hide All Completed Tasks"></span>
             </div>
@@ -64,17 +61,17 @@
                                 {
                                     case Priority.Low:
                                     {
-                                        <span class="fas fa-angle-down priority-low"></span>
+                                        <span class="fas fa-angle-down priority-low" title="Low Priority"></span>
                                         break;
                                     }
                                     case Priority.High:
                                     {
-                                        <span class="fas fa-angle-up priority-high"></span>
+                                        <span class="fas fa-angle-up priority-high" title="High Priority"></span>
                                         break;
                                     }
                                     case Priority.Critical:
                                     {
-                                        <span class="fas fa-exclamation priority-critical"></span>
+                                        <span class="fas fa-exclamation priority-critical" title="Critical Priority"></span>
                                         break;
                                     }
                                     case Priority.Normal:

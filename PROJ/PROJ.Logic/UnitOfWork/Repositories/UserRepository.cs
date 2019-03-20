@@ -23,13 +23,23 @@ namespace PROJ.Logic.UnitOfWork.Repositories
             return Mapper.Map<IList<UserDTO>>(entities);
         }
 
-        public UserDTO FindByName(string normalizedUserName)
+        public UserDTO FindByName(string username)
         {
+            var normalizedUserName = username.ToUpper();
             var entity = _session.QueryOver<User>()
                 .Where(x => x.NormalizedUserName == normalizedUserName)
                 .SingleOrDefault();
 
             return Mapper.Map<UserDTO>(entity);
+        }
+
+        public UserDTO GetCurrentUser()
+        {
+            var entity = _session.Load<User>(_appContext.UserId.HasValue ? _appContext.UserId.Value : 0);
+
+            return entity != null
+                ? Mapper.Map<UserDTO>(entity)
+                : null;
         }
     }
 }

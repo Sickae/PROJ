@@ -1,21 +1,3 @@
-$(document).on('click', '#add-project', function () {
-    var searchInput = $('#search-project');
-    var name = searchInput.val();
-
-    if (name.length === 0) {
-        searchInput.focus();
-    } else {
-        createProject(name);
-    }
-});
-
-$(document).on('keydown', '#search-project', function (event) {
-    var name = $(this).val();
-    if (event.keyCode === 13 && name.length > 0) {
-        createProject(name);
-    }
-});
-
 $(document).on('focusout', '#project-name', function () {
     var name = $(this).text();
     if (name.length > 0 && name !== $(this).data('original-name')) {
@@ -39,7 +21,7 @@ $(document).on('click', '#project-delete', function () {
     dialog('Delete Project', 'Are you sure you want to delete this project?',
         'Yes', 'No', function () {
             var projectId = $('#Id').val();
-            deleteProject(projectId);
+            deleteProject(projectId, true);
         });
 });
 
@@ -50,20 +32,80 @@ $(document).on('click', '#project-toggle-completed', function () {
     } else {
         tasks.show();
     }
-})
+});
 
-function createProject(name) {
-    $.post('../../Project/Create', { name })
-        .done(function(data) {
-            if (data) {
-                $('#search-project').val('');
-                location.reload();
-            }
-        });
+$(document).on('click', '#add-project', function () {
+    var newProject = $('.new-project');
+
+    if (newProject.is(':hidden')) {
+        newProject.show().find('input').focus();
+    } else {
+        var input = newProject.find('input');
+        var name = input.val();
+        var teamId = $('#Id').val();;
+
+        if (name.length > 0) {
+            createProject(teamId, name);
+        } else {
+            input.focus();
+        }
+    }
+});
+
+$(document).on('focusout', '.new-project > input', function () {
+    var name = $(this).val();
+
+    if (name.length > 0) {
+        var teamId = $('#Id').val();
+        createProject(teamId, name);
+    }
+
+    $('.new-project').hide();
+});
+
+$(document).on('keydown', '.new-project > input', function (event) {
+    if (event.keyCode === 13 && $(this).val().length > 0) {
+        $(this).blur();
+    } else if (event.keyCode === 27) {
+        $(this).val('').blur();
+    }
+});
+
+$(document).on('click', '.toggle-container', function () {
+    var tasks = $(this).closest('.team-container').find('.list-container');
+
+    if ($(this).hasClass('fa-angle-up')) {
+        tasks.slideUp();
+    } else {
+        tasks.slideDown();
+    }
+
+    $(this).toggleClass('fa-angle-up fa-angle-down');
+});
+
+$(document).on('click', '#team-delete-project', function () {
+    var $this = $(this);
+    dialog('Delete Project', 'Are you sure you want to delete this project?',
+    'Yes', 'No', function () {
+        var projectId = $this.closest('.list-item').data('id');
+        deleteProject(projectId, false);
+    });
+});
+
+function createProject(teamId, name) {
+    $('.new-project > input').val('');
+    $.post('../../Project/Create', {
+        teamId,
+        name
+    }).done(function(data) {
+        if (data) {
+            location.reload();
+        }
+    });
 }
 
 function renameProject(projectId, name) {
-    $('.project-header').children('.loader').show();
+    $('.page-header').children('.loader').show();
     $.post('../../Project/Rename', {
         projectId,
         name
@@ -74,12 +116,17 @@ function renameProject(projectId, name) {
     })
 }
 
-function deleteProject(projectId) {
-    $('.project-header > .loader').show();
+function deleteProject(projectId, redirect) {
+    redirect = redirect || false;
+    $('.page-header > .loader').show();
     $.post('../../Project/Delete', { projectId })
         .done(function (data) {
             if (data.success) {
-                location.replace(data.redirectUrl);
+                if (redirect) {
+                    location.replace(data.redirectUrl);
+                } else {
+                    location.reload();
+                }
             }
         });
 }

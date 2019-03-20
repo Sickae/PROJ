@@ -17,4 +17,16 @@
     <ProjectReference Include="..\PROJ.Shared\PROJ.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Team\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Team\NotFound.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Team\_List.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

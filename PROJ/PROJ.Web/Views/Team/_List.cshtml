@@ -1,0 +1,30 @@
+﻿@using PROJ.Logic.DTOs
+
+@{ 
+    var activeId = ViewBag.ActiveTeamId != null ? (int)ViewBag.ActiveTeamId : 0;
+}
+
+<div class="side-menu side-menu-sub bg-blue-grey-lighten-4">
+    <div class="side-menu-sub-header">
+        <div class="side-menu-sub-header-top">
+            <input id="search-team" class="form-input" placeholder="Search / Add Team" />
+        </div>
+        <div class="side-menu-sub-header-bottom">
+            <span>Teams (@ViewBag.TeamsList.Count)</span>
+            <a id="add-team">
+                <span class="fas fa-plus"></span>
+                &nbsp;Add Team
+            </a>
+        </div>
+    </div>
+    <div class="side-sub-menu-actions">
+        @foreach (var team in (ViewBag.TeamsList as IList<TeamDTO>).OrderBy(x => x.Id))
+        {
+            var active = activeId == team.Id ? "active" : "";
+            <a class="side-sub-menu-action color-blue-grey-darken-3 @active" href="@Url.Action(nameof(TeamController.Show), "Team", new { id = team.Id })">
+                <span>@team.Name</span>
+                <span>@team.Members.Count @(team.Members.Count == 1 ? "person" : "people")</span>
+            </a>
+        }
+    </div>
+</div>

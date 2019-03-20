@@ -22,6 +22,7 @@ namespace PROJ.Logic.Mapping
             CreateMap<Checklist, ChecklistDTO>().ReverseMap();
             CreateMap<ChecklistTask, ChecklistTaskDTO>().ReverseMap();
             CreateMap<Comment, CommentDTO>().ReverseMap();
+            CreateMap<Team, TeamDTO>().ReverseMap();
         }
     }
 }

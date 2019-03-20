@@ -6,6 +6,8 @@ namespace PROJ.Logic.Interfaces
     public interface IAppContext
     {
         int? UserId { get; }
+        int? ActiveTeamId { get; }
         IList<ProjectDTO> Projects { get; }
+        IList<TeamDTO> Teams { get; }
     }
 }

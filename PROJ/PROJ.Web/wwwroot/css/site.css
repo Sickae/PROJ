@@ -324,6 +324,10 @@ body a {
     padding: 10px 0;
 }
 
+.side-menu-team {
+    margin-bottom: 10px;
+}
+
 .menu-footer-user {
     font-size: 20px;
 }
@@ -441,7 +445,8 @@ a.side-sub-menu-action:hover {
     background-color: rgba(170, 190, 197, .5);
 }
 
-#add-project {
+#add-project,
+#add-team {
     cursor: pointer;
 }
 
@@ -526,9 +531,9 @@ a.side-sub-menu-action:hover {
     margin-left: 5px;
 }
 
-/* Project page */
+/* Page header */
 
-.project-header {
+.page-header {
     flex-basis: 100%;
     display: flex;
     align-items: center;
@@ -537,11 +542,14 @@ a.side-sub-menu-action:hover {
     border-bottom: 1px solid #CFD8DC;
     padding-bottom: 10px;
     margin-bottom: 30px;
+    margin-top: 0;
 }
 
-.project-header:hover > .icons-container > .icon {
+.page-header:hover > .icons-container > .icon {
     display: block;
 }
+
+/* Icons */
 
 .icons-container {
     display: flex;
@@ -552,6 +560,10 @@ a.side-sub-menu-action:hover {
     color: #90A4AE;
     font-size: 12px;
     margin-left: 5px;
+}
+
+.icon > a {
+    color: #90A4AE;
 }
 
 .icon-large {
@@ -575,7 +587,7 @@ a.side-sub-menu-action:hover {
     cursor: pointer;
 }
 
-.icon > span:hover {
+.icon span:hover {
     color: #80CBC4;
 }
 
@@ -722,4 +734,57 @@ a.side-sub-menu-action:hover {
 
 .priority-icon:first-of-type {
     margin-left: 0;
+}
+
+/* Team/Projects */
+
+.team-container {
+    flex-basis: 100%;
+    border: 1px solid #CFD8DC;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(217, 216, 220, .2);
+    border-bottom: 1px solid #CFD8DC;
+    padding: 10px;
+}
+
+.list-container {
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 30px;    
+}
+
+.toggle-container {
+    cursor: pointer;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #CFD8DC;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.list-item:hover > .icons-container > .icon {
+    display: block;
+}
+
+.list-item > .loader {
+    margin-left: 20px;
+}
+
+#add-project,
+#add-member {
+    margin-left: 5px;
+}
+
+.new-project,
+.new-member {
+    display: none;
+    border: none;
 }

@@ -19,14 +19,14 @@ namespace PROJ.DataAccess.Entities
 
         public virtual int AccessFailedCount { get; set; }
 
-        //public virtual DateTimeOffset? LockoutEndDate { get; set; }
-
         public virtual bool TwoFactorEnabled { get; set; }
 
         public virtual DateTime? LastLoginDate { get; set; }
 
         public virtual IList<UserClaim> UserClaims { get; set; }
 
-        public virtual IList<Project> Projects { get; set; }
+        public virtual IList<Team> Teams { get; set; }
+
+        public virtual Team ActiveTeam { get; set; }
     }
 }

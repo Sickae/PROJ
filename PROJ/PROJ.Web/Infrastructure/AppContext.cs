@@ -13,18 +13,28 @@ namespace PROJ.Web.Infrastructure
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Lazy<IdentityUserManager> _identityUserManager;
         private readonly Lazy<ProjectRepository> _projectRepository;
+        private readonly Lazy<UserRepository> _userRepository;
+        private readonly Lazy<TeamRepository> _teamRepository;
 
         public int? UserId => int.TryParse(_identityUserManager.Value.GetUserId(_httpContextAccessor.HttpContext.User), out var id)
             ? id
             : (int?)null;
 
+        public int? ActiveTeamId => UserId.HasValue
+            ? _userRepository.Value.Get(UserId.Value).ActiveTeam?.Id
+            : null;
+
         public IList<ProjectDTO> Projects => _projectRepository.Value.GetProjectsForCurrentUser();
 
-        public AppContext(IHttpContextAccessor httpContextAccessor, Lazy<IdentityUserManager> identityUserManager, Lazy<ProjectRepository> projectRepository)
+        public IList<TeamDTO> Teams => _teamRepository.Value.GetTeamsForCurrentUser();
+
+        public AppContext(IHttpContextAccessor httpContextAccessor, Lazy<IdentityUserManager> identityUserManager, Lazy<ProjectRepository> projectRepository, Lazy<UserRepository> userRepository, Lazy<TeamRepository> teamRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _identityUserManager = identityUserManager;
             _projectRepository = projectRepository;
+            _userRepository = userRepository;
+            _teamRepository = teamRepository;
         }
     }
 }

@@ -21,6 +21,8 @@ namespace PROJ.Logic.DTOs
 
         public IList<UserClaimDTO> UserClaims { get; set; }
 
-        public IList<ProjectDTO> Projects { get; set; }
+        public IList<TeamDTO> Teams { get; set; }
+
+        public TeamDTO ActiveTeam { get; set; }
     }
 }

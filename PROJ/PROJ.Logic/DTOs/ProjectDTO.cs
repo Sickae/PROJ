@@ -11,5 +11,7 @@ namespace PROJ.Logic.DTOs
         public UserDTO Owner { get; set; }
 
         public IList<UserDTO> Users { get; set; }
+
+        public TeamDTO Team { get; set; }
     }
 }

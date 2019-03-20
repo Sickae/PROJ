@@ -22,7 +22,7 @@ namespace PROJ.Logic.UnitOfWork.Repositories
 
         public IList<ProjectDTO> GetProjectsForCurrentUser()
         {
-            var entities = _session.Load<User>(_appContext.UserId.Value).Projects;
+            var entities = _session.Load<User>(_appContext.UserId.Value).ActiveTeam?.Projects ?? new List<Project>();
             return Mapper.Map<IList<ProjectDTO>>(entities);
         }
     }

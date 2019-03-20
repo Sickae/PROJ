@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Projects list";
+    ViewData["Title"] = "Projects List";
 }
 
 @section Scripts {
@@ -8,4 +8,11 @@
 
 <partial name="_List" />
 
-<div class="empty-index">No project selected</div>
+@if (ViewBag.HasActiveTeam != null && ViewBag.HasActiveTeam)
+{
+    <div class="empty-index">No project selected</div>
+}
+else
+{
+    <div class="page-not-found">No active team is selected</div>
+}

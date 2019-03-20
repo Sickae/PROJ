@@ -1,0 +1,98 @@
+﻿@model TeamViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/team-functions.js"></script>
+    <script type="text/javascript" src="~/js/project-functions.js"></script>
+}
+
+@Html.HiddenFor(x => x.Id)
+
+<partial name="_List" />
+
+<div class="sub-menu-page">
+    <div class="page-header">
+        <span id="team-name" contenteditable="true" spellcheck="false" data-original-name="@Model.Name">@Model.Name</span>
+        <div class="loader loader-small"></div>
+        <div class="icons-container">
+            <div id="team-set-active" class="icon">
+                <span class="fas fa-check" title="Set As Active Team"></span>
+            </div>
+            <div id="team-delete" class="icon destructive">
+                <span class="fas fa-trash" title="Delete Team"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-container">
+        <div class="team-header">
+            <span>Projects</span>
+            <span class="fas fa-angle-up toggle-container"></span>
+        </div>
+        <div class="list-container">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="list-item" data-id="@project.Id">
+                    <span id="project-name" contenteditable="true" spellcheck="false" data-original-name="@project.Name">@project.Name</span>
+                    <div class="loader loader-small"></div>
+                    <div class="icons-container">
+                        <div class="icon">
+                            <a href="@Url.Action(nameof(ProjectController.Show), "Project", new { id = project.Id })">
+                                <span class="fas fa-clipboard"></span>
+                            </a>
+                        </div>
+                        <div id="team-delete-project" class="icon destructive">
+                            <span class="fas fa-trash" title="Delete Project"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="loader loader-small"></div>
+
+            <div class="list-item new-project">
+                <input class="form-input" placeholder="Project Name" />
+            </div>
+
+            <div id="add-project" class="add-link">
+                <span class="fas fa-plus"></span>
+                &ensp;Add Project
+            </div>
+        </div>
+    </div>
+
+    <div class="team-container">
+        <div class="team-header">
+            <span>Team Members</span>
+            <span class="fas fa-angle-up toggle-container"></span>
+        </div>
+        <div class="list-container">
+            @foreach (var user in Model.Members)
+            {
+                <div class="list-item" data-id="@user.Id">
+                    <span>@user.UserName</span>
+                    <div class="loader loader-small"></div>
+                    <div class="icons-container">
+                        <div id="team-remove-member" class="icon">
+                            <span class="fas fa-user-minus" title="Remove From Team"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="loader loader-small"></div>
+
+            <div class="list-item new-member">
+                <input class="form-input" placeholder="Username" />
+            </div>
+
+            <div id="add-member" class="add-link">
+                <span class="fa fa-plus"></span>
+                &ensp;Add Member
+            </div>
+        </div>
+    </div>
+</div>

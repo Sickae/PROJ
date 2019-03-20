@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PROJ.Logic.DTOs;
+using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using PROJ.Web.Models;
@@ -14,28 +15,35 @@ namespace PROJ.Web.Controllers
         private readonly ProjectRepository _projectRepository;
         private readonly IProjectManager _projectManager;
         private readonly ITaskGroupManager _taskGroupManager;
+        private readonly IAppContext _appContext;
 
-        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, ITaskGroupManager taskGroupManager)
+        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, ITaskGroupManager taskGroupManager, IAppContext appContext)
         {
             _projectRepository = projectRepository;
             _projectManager = projectManager;
             _taskGroupManager = taskGroupManager;
+            _appContext = appContext;
         }
 
         public IActionResult Index()
         {
             FillViewBags();
+            ViewBag.HasActiveTeam = _appContext.ActiveTeamId.HasValue && _appContext.ActiveTeamId.Value != 0;
             return View();
         }
 
-        public IActionResult Create(string name)
+        public IActionResult Create(int teamId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
                 return Json(false);
             }
 
-            var project = new ProjectDTO { Name = name };
+            var project = new ProjectDTO
+            {
+                Name = name,
+                Team = new TeamDTO { Id = teamId }
+            };
             _projectManager.Create(project);
 
             return Json(true);

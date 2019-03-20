@@ -33,7 +33,7 @@ namespace PROJ.Logic.UnitOfWork.Managers
             return CreateInternal(entity);
         }
 
-        public void Delete(TDto dto)
+        public virtual void Delete(TDto dto)
         {
             if (dto == null)
             {

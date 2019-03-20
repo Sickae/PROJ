@@ -56,7 +56,7 @@ $(document).on('keydown', '#task-name', function (event) {
 
 $(document).on('click', '#task-delete', function() {
     var $this = $(this);
-    dialog('Task Delete', 'Are you sure you want to delete this task?',
+    dialog('Delete Task', 'Are you sure you want to delete this task?',
         'Yes', 'No', function () {
             var taskId = $this.closest('.task').data('id');
             deleteTask(taskId);

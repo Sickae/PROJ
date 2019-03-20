@@ -1,7 +1,9 @@
 ﻿@using PROJ.Logic.Identity.Managers
+@using PROJ.Logic.UnitOfWork.Repositories
 
 @inject SignInManager SignInManager
 @inject IdentityUserManager IdentityUserManager
+@inject UserRepository UserRepository
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -16,10 +18,13 @@
                 <span class="fas fa-folder-open"></span>
                 Projects
             </a>
-            <a href="#" class="menu-action color-blue-grey-lighten-4">
-                <span class="fas fa-tree"></span>
-                Test
+            <a asp-controller="Team" asp-action="Index" class="menu-action color-blue-grey-lighten-4">
+                <span class="fas fa-users"></span>
+                Teams
             </a>
+        </div>
+        <div class="side-menu-team">
+            <a class="menu-action color-blue-grey-lighten-5" href="@Url.Action(nameof(TeamController.Show), "Team", new { id = UserRepository.GetCurrentUser().ActiveTeam?.Id })">@UserRepository.GetCurrentUser().ActiveTeam?.Name</a>
         </div>
         <div class="side-menu-footer">
             <div class="menu-footer-user color-blue-grey-lighten-5">@IdentityUserManager.GetUserName(User)</div>

@@ -89,6 +89,8 @@ namespace PROJ.Web
             // Lazy services
             services.AddScoped(provider => new Lazy<IdentityUserManager>(() => provider.GetService<IdentityUserManager>()));
             services.AddScoped(provider => new Lazy<ProjectRepository>(() => provider.GetService<ProjectRepository>()));
+            services.AddScoped(provider => new Lazy<UserRepository>(() => provider.GetService<UserRepository>()));
+            services.AddScoped(provider => new Lazy<TeamRepository>(() => provider.GetService<TeamRepository>()));
 
             // Repositories
             services.AddScoped<UserRepository>();
@@ -99,6 +101,7 @@ namespace PROJ.Web
             services.AddScoped<ChecklistRepository>();
             services.AddScoped<ChecklistTaskRepository>();
             services.AddScoped<CommentRepository>();
+            services.AddScoped<TeamRepository>();
 
             // UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -112,6 +115,7 @@ namespace PROJ.Web
             services.AddScoped<IChecklistManager, ChecklistManager>();
             services.AddScoped<IChecklistTaskManager, ChecklistTaskManager>();
             services.AddScoped<ICommentManager, CommentManager>();
+            services.AddScoped<ITeamManager, TeamManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
