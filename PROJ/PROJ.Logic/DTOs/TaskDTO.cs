@@ -11,7 +11,7 @@ namespace PROJ.Logic.DTOs
 
         public string Description { get; set; }
 
-        public UserDTO AssignedUser { get; set; }
+        public IList<UserDTO> AssignedUsers { get; set; }
 
         public Priority Priority { get; set; }
 

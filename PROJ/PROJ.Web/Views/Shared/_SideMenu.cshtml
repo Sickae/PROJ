@@ -27,8 +27,13 @@
             <a class="menu-action color-blue-grey-lighten-5" href="@Url.Action(nameof(TeamController.Show), "Team", new { id = UserRepository.GetCurrentUser().ActiveTeam?.Id })">@UserRepository.GetCurrentUser().ActiveTeam?.Name</a>
         </div>
         <div class="side-menu-footer">
-            <div class="menu-footer-user color-blue-grey-lighten-5">@IdentityUserManager.GetUserName(User)</div>
-            <a asp-controller="User" asp-action="LogOut" class="menu-footer-logout menu-action color-blue-grey-lighten-4">Logout</a>
+            <div class="user-icon">
+                <img src="~/images/unknown_user.png" />
+            </div>
+            <div class="user-details">
+                <div class="menu-footer-user color-blue-grey-lighten-5">@IdentityUserManager.GetUserName(User)</div>
+                <a asp-controller="User" asp-action="LogOut" class="menu-footer-logout menu-action color-blue-grey-lighten-4">Logout</a>
+            </div>
         </div>
     </div>
 }

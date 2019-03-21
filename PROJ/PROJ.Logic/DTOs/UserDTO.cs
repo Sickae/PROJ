@@ -24,5 +24,7 @@ namespace PROJ.Logic.DTOs
         public IList<TeamDTO> Teams { get; set; }
 
         public TeamDTO ActiveTeam { get; set; }
+
+        public IList<TaskDTO> AssignedTasks { get; set; }
     }
 }

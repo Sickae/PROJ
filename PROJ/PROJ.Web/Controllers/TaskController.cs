@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using PROJ.Shared.Enums;
@@ -13,11 +14,13 @@ namespace PROJ.Web.Controllers
     {
         private readonly TaskRepository _taskRepository;
         private readonly ITaskManager _taskManager;
+        private readonly IAppContext _appContext;
 
-        public TaskController(TaskRepository taskRepository, ITaskManager taskManager)
+        public TaskController(TaskRepository taskRepository, ITaskManager taskManager, IAppContext appContext)
         {
             _taskRepository = taskRepository;
             _taskManager = taskManager;
+            _appContext = appContext;
         }
 
         public IActionResult Rename(int taskId, string name)
@@ -99,6 +102,84 @@ namespace PROJ.Web.Controllers
             }
 
             task.Priority = priority;
+            _taskManager.Save(task);
+
+            return Json(new { success = true });
+        }
+
+        public IActionResult JoinTask(int taskId)
+        {
+            var task = _taskRepository.Get(taskId);
+            var user = _appContext.CurrentUser;
+
+            if (task == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
+            }
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "You are not logged in."
+                });
+            }
+
+            if (task.AssignedUsers.Any(x => x.Id == user.Id))
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "You are already assigned to this Task."
+                });
+            }
+
+            task.AssignedUsers.Add(user);
+            _taskManager.Save(task);
+
+            return Json(new { success = true });
+        }
+
+        public IActionResult LeaveTask(int taskId)
+        {
+            var task = _taskRepository.Get(taskId);
+            var user = _appContext.CurrentUser;
+
+            if (task == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
+            }
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "You are not logged in."
+                });
+            }
+
+            var toRemove = task.AssignedUsers.FirstOrDefault(x => x.Id == user.Id);
+
+            if (toRemove == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "You are not assigned to this Task."
+                });
+            }
+
+            task.AssignedUsers.Remove(toRemove);
             _taskManager.Save(task);
 
             return Json(new { success = true });

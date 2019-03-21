@@ -28,5 +28,7 @@ namespace PROJ.DataAccess.Entities
         public virtual IList<Team> Teams { get; set; }
 
         public virtual Team ActiveTeam { get; set; }
+
+        public virtual IList<Task> AssignedTasks { get; set; }
     }
 }

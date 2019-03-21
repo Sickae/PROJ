@@ -6,6 +6,7 @@ using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
 using PROJ.Web.Models;
+using System.Linq;
 
 namespace PROJ.Web.Controllers
 {
@@ -13,15 +14,17 @@ namespace PROJ.Web.Controllers
     public class ProjectController : Controller
     {
         private readonly ProjectRepository _projectRepository;
+        private readonly TaskRepository _taskRepository;
         private readonly IProjectManager _projectManager;
         private readonly ITaskGroupManager _taskGroupManager;
         private readonly IAppContext _appContext;
 
-        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, ITaskGroupManager taskGroupManager, IAppContext appContext)
+        public ProjectController(ProjectRepository projectRepository, IProjectManager projectManager, ITaskGroupManager taskGroupManager, TaskRepository taskRepository, IAppContext appContext)
         {
             _projectRepository = projectRepository;
             _projectManager = projectManager;
             _taskGroupManager = taskGroupManager;
+            _taskRepository = taskRepository;
             _appContext = appContext;
         }
 
@@ -155,6 +158,7 @@ namespace PROJ.Web.Controllers
         private void FillViewBags()
         {
             ViewBag.ProjectsList = _projectRepository.GetProjectsForCurrentUser();
+            ViewBag.AssignedTaskIds = _taskRepository.GetTasksForCurrentUser().Select(x => x.Id);
         }
     }
 }

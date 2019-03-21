@@ -92,6 +92,10 @@ $(document).on('click', '#team-delete-project', function () {
     });
 });
 
+$(document).on('click', '#project-show-my-tasks', function () {
+    $('.task:not(.assigned, .new-task)').toggle();
+});
+
 function createProject(teamId, name) {
     var loader = $('.page-header > .loader');
     var error = $('.page-header > .req-error');

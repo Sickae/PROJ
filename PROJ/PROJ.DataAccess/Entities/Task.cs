@@ -13,7 +13,7 @@ namespace PROJ.DataAccess.Entities
         [Text]
         public virtual string Description { get; set; }
 
-        public virtual User AssignedUser { get; set; }
+        public virtual IList<User> AssignedUsers { get; set; }
 
         public virtual Priority Priority { get; set; }
 

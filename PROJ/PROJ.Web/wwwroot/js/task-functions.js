@@ -85,6 +85,16 @@ $(document).on('click', '.priority-icon', function () {
     setPriority(taskId, priority);
 });
 
+$(document).on('click', '#task-join', function () {
+    var taskId = $(this).closest('.task').data('id');
+    joinTask(taskId);
+});
+
+$(document).on('click', '#task-leave', function () {
+    var taskId = $(this).closest('.task').data('id');
+    leaveTask(taskId);
+});
+
 function sendNewTask(groupId, name) {
     var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
     var error = loader.siblings('.req-error');
@@ -189,4 +199,42 @@ function setPriority(taskId, priority) {
             }
         }
     });
+}
+
+function joinTask(taskId) {
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
+    $.post('../../Task/JoinTask', { taskId})
+        .done(function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
+            }
+        });
+}
+
+function leaveTask(taskId) {
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
+    $.post('../../Task/LeaveTask', { taskId})
+        .done(function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
+            }
+        });
 }

@@ -91,6 +91,7 @@ namespace PROJ.Web
             services.AddScoped(provider => new Lazy<ProjectRepository>(() => provider.GetService<ProjectRepository>()));
             services.AddScoped(provider => new Lazy<UserRepository>(() => provider.GetService<UserRepository>()));
             services.AddScoped(provider => new Lazy<TeamRepository>(() => provider.GetService<TeamRepository>()));
+            services.AddScoped(provider => new Lazy<TaskRepository>(() => provider.GetService<TaskRepository>()));
 
             // Repositories
             services.AddScoped<UserRepository>();

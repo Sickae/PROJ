@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = Model.Name;
+    var assignedTaskIds = ViewBag.AssignedTaskIds as IEnumerable<int>;
 }
 
 @section Scripts {
@@ -27,6 +28,9 @@
         <div class="icons-container">
             <div id="project-toggle-completed" class="icon">
                 <span class="fas fa-check-double" title="Show/Hide All Completed Tasks"></span>
+            </div>
+            <div id="project-show-my-tasks" class="icon">
+                <span class="fas fa-tasks" title="Show My Tasks Only / Show All"></span>
             </div>
             <div id="project-delete" class="icon destructive">
                 <span class="fas fa-trash" title="Delete Project"></span>
@@ -62,7 +66,8 @@
                     {
                         var isCompletedClass = task.IsCompleted ? "completed" : "";
                         var isCompletedCheck = task.IsCompleted ? "checked" : "";
-                        <div class="task @isCompletedClass" data-id="@task.Id">
+                        var isAssignedClass = assignedTaskIds.Contains(task.Id) ? "assigned" : "";
+                        <div class="task @isCompletedClass @isAssignedClass" data-id="@task.Id">
                             <input id="complete-task" type="checkbox" class="form-checkbox" @isCompletedCheck />
                             <div class="priority">
                                 @switch (task.Priority)
@@ -87,6 +92,15 @@
                                 }
                             </div>
                             <span id="task-name" contenteditable="true" spellcheck="false" data-original-name="@task.Name">@task.Name</span>
+                            <div class="user-icons-container">
+                                @foreach (var user in task.AssignedUsers)
+                                {
+                                    // TODO actual user icons
+                                    <div class="user-icon">
+                                        <img src="~/images/unknown_user.png" title="@user.UserName" style="border: 1px solid #CFD8DC" />
+                                    </div>
+                                }
+                            </div>
                             <div class="loader loader-small"></div>
                             <div class="req-error req-error-small">
                                 <span class="fas fa-exclamation-triangle" title="Error"></span>
@@ -96,6 +110,19 @@
                                 <div class="icon">
                                     <span class="fas fa-clipboard" title="Details"></span>
                                 </div>
+                                @if (assignedTaskIds.Contains(task.Id))
+                                {
+                                    
+                                    <div id="task-leave" class="icon">
+                                        <span class="fas fa-user-minus" title="Leave Task"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="task-join" class="icon">
+                                        <span class="fas fa-user-plus" title="Join Task"></span>
+                                    </div>
+                                }
                                 <div id="task-toggle-priority" class="icon">
                                     <span class="fas fa-exclamation" title="Set Priority"></span>
                                     <div class="priority-icon priority-icon-low" data-priority="@Priority.Low">

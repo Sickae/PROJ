@@ -346,10 +346,24 @@ body a {
 }
 
 .side-menu-footer {
+    display: flex;
+    align-items: center;
     width: 100%;
-    text-align: center;
     border-top: 1px solid #37474F;
-    padding: 10px 0;
+    padding: 10px;
+    padding-left: 20px;
+}
+
+.side-menu-footer > .user-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 25px;
+}
+
+.side-menu-footer > .user-icon > img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
 }
 
 .side-menu-team {
@@ -723,6 +737,26 @@ a.side-sub-menu-action:hover {
 .task > .loader,
 .task > .req-error {
     margin-left: 20px;
+}
+
+.task > .user-icons-container {
+    display: flex;
+    margin-left: 10px;
+}
+
+.task > .user-icons-container > .user-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.task > .user-icons-container > .user-icon:not(:first-child) {
+    margin-left: 5px;
+}
+
+.task > .user-icons-container > .user-icon > img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
 }
 
 #add-task {
