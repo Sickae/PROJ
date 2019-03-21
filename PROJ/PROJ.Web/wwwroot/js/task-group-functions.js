@@ -81,36 +81,65 @@ $(document).on('click', '#task-group-toggle-completed', function () {
 });
 
 function sendNewGroup(projectId, name) {
-    $('.task-groups-container').children('.loader').show();
+    var loader = $('.task-groups-container > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../Project/AddNewGroup', {
         projectId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             $('.new-group > input').val('');
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
         }
     });
 }
 
 function renameGroup(groupId, name) {
-    $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader').show();
+    var loader = $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../TaskGroup/Rename', {
         groupId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
+            var groupName = loader.siblings('#task-group-name');
+            groupName.text(groupName.data('original-name'));
         }
-    })
+    });
 }
 
 function deleteGroup(groupId) {
-    $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader').show();
+    var loader = $('.task-group[data-id=' + groupId + '] > .task-group-header > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../TaskGroup/Delete', { groupId })
         .done(function(data) {
-            if (data) {
+            if (data.success) {
                 location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
             }
         });
 }

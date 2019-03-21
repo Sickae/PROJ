@@ -25,14 +25,22 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Task name cannot be empty."
+                });
             }
 
             var group = _taskGroupRepository.Get(groupId);
 
             if (group == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task Group."
+                });
             }
 
             var task = new TaskDTO
@@ -43,27 +51,35 @@ namespace PROJ.Web.Controllers
             };
 
             _taskManager.Create(task);
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Rename(int groupId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Task name cannot be empty."
+                });
             }
 
             var group = _taskGroupRepository.Get(groupId);
 
             if (group == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task Group."
+                });
             }
 
             group.Name = name;
             _taskGroupManager.Save(group);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Delete(int groupId)
@@ -72,12 +88,16 @@ namespace PROJ.Web.Controllers
 
             if (group == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task Group."
+                });
             }
 
             _taskGroupManager.Delete(groupId);
 
-            return Json(true);
+            return Json(new { success = true });
         }
     }
 }

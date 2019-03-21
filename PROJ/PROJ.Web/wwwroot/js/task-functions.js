@@ -86,60 +86,107 @@ $(document).on('click', '.priority-icon', function () {
 });
 
 function sendNewTask(groupId, name) {
-    $('.task-group[data-id=' + groupId + ']').find('.loader').last().show();
+    var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../TaskGroup/AddNewTask', {
         groupId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             $('.new-task > input').val('');
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
         }
     });
 }
 
 function renameTask(taskId, name) {
-    $('.task[data-id=' + taskId + '] > .loader').show();
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../Task/Rename', {
         taskId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
+            var taskName = loader.siblings('#task-name');
+            taskName.text(taskName.data('original-name'));
         }
     });
 }
 
 function deleteTask(taskId) {
-    $('.task[data-id=' + taskId + '] > .loader').show();
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../Task/Delete', { taskId })
         .done(function(data) {
-            if (data) {
+            if (data.success) {
                 location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
             }
         });
 }
 
 function completeTask(taskId, state) {
-    $('.task[data-id=' + taskId + '] > .loader').show();
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../Task/ToggleComplete', {
         taskId,
         state
     }).done(function(data) {
-            if (data) {
+            if (data.success) {
                 location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
             }
         });
 }
 
 function setPriority(taskId, priority) {
-    $('.task[data-id=' + taskId + '] > .loader').show();
+    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var error = loader.siblings('.req-error');
+    error.hide();
+    loader.show();
     $.post('../../Task/SetPriority', {
         taskId,
         priority
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
         }
     });
 }

@@ -36,7 +36,11 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Project name cannot be empty."
+                });
             }
 
             var project = new ProjectDTO
@@ -46,7 +50,7 @@ namespace PROJ.Web.Controllers
             };
             _projectManager.Create(project);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Show(int id)
@@ -69,14 +73,22 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Task Group name cannot be empty."
+                });
             }
 
             var project = _projectRepository.Get(projectId);
 
             if (project == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Project."
+                });
             }
 
             var group = new TaskGroupDTO
@@ -86,27 +98,35 @@ namespace PROJ.Web.Controllers
             };
 
             _taskGroupManager.Create(group);
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Rename(int projectId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Project name cannot be empty."
+                });
             }
 
             var project = _projectRepository.Get(projectId);
 
             if (project == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Project."
+                });
             }
 
             project.Name = name;
             _projectManager.Save(project);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Delete(int projectId)
@@ -115,7 +135,11 @@ namespace PROJ.Web.Controllers
 
             if (project == null)
             {
-                return Json(new { success = false });
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Project"
+                });
             }
 
             _projectManager.Delete(project);

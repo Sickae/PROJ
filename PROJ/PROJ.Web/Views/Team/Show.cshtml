@@ -17,6 +17,10 @@
     <div class="page-header">
         <span id="team-name" contenteditable="true" spellcheck="false" data-original-name="@Model.Name">@Model.Name</span>
         <div class="loader loader-small"></div>
+        <div class="req-error req-error-small">
+            <span class="fas fa-exclamation-triangle" title="Error"></span>
+            <span id="error-message"></span>
+        </div>
         <div class="icons-container">
             <div id="team-set-active" class="icon">
                 <span class="fas fa-check" title="Set As Active Team"></span>
@@ -38,6 +42,10 @@
                 <div class="list-item" data-id="@project.Id">
                     <span id="project-name" contenteditable="true" spellcheck="false" data-original-name="@project.Name">@project.Name</span>
                     <div class="loader loader-small"></div>
+                    <div class="req-error req-error-small">
+                        <span class="fas fa-exclamation-triangle" title="Error"></span>
+                        <span id="error-message"></span>
+                    </div>
                     <div class="icons-container">
                         <div class="icon">
                             <a href="@Url.Action(nameof(ProjectController.Show), "Project", new { id = project.Id })">
@@ -52,6 +60,11 @@
             }
 
             <div class="loader loader-small"></div>
+
+            <div class="req-error req-error-small">
+                <span class="fas fa-exclamation-triangle" title="Error"></span>
+                <span id="error-message"></span>
+            </div>
 
             <div class="list-item new-project">
                 <input class="form-input" placeholder="Project Name" />
@@ -75,6 +88,10 @@
                 <div class="list-item" data-id="@user.Id">
                     <span>@user.UserName</span>
                     <div class="loader loader-small"></div>
+                    <div class="req-error req-error-small">
+                        <span class="fas fa-exclamation-triangle" title="Error"></span>
+                        <span id="error-message"></span>
+                    </div>
                     <div class="icons-container">
                         <div id="team-remove-member" class="icon">
                             <span class="fas fa-user-minus" title="Remove From Team"></span>
@@ -84,6 +101,11 @@
             }
 
             <div class="loader loader-small"></div>
+
+            <div class="req-error req-error-small">
+                <span class="fas fa-exclamation-triangle" title="Error"></span>
+                <span id="error-message"></span>
+            </div>
 
             <div class="list-item new-member">
                 <input class="form-input" placeholder="Username" />

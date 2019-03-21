@@ -24,20 +24,28 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Task name cannot be empty."
+                });
             }
 
             var task = _taskRepository.Get(taskId);
 
             if (task == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
             }
 
             task.Name = name;
             _taskManager.Save(task);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Delete(int taskId)
@@ -46,12 +54,16 @@ namespace PROJ.Web.Controllers
 
             if (task == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
             }
 
             _taskManager.Delete(task);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult ToggleComplete(int taskId, bool state)
@@ -60,13 +72,17 @@ namespace PROJ.Web.Controllers
 
             if (task == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
             }
 
             task.IsCompleted = state;
             _taskManager.Save(task);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult SetPriority(int taskId, Priority priority)
@@ -75,13 +91,17 @@ namespace PROJ.Web.Controllers
 
             if (task == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
             }
 
             task.Priority = priority;
             _taskManager.Save(task);
 
-            return Json(true);
+            return Json(new { success = true });
         }
     }
 }

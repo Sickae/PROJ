@@ -14,11 +14,16 @@ $(document).on('focusout', '.form-input[data-val]', function () {
     $(this).toggleClass('form-input-invalid', !$(this).valid());
 });
 
-$(document).on('submit', function (event) {
+$(document).on('submit', function () {
     $('.loader').show();
 });
 
 $(document).on('click', '#close-dialog', removeDialog);
+
+$(document).on('click', '.side-menu-toggle', function () {
+    $(this).toggleClass('fa-angle-left fa-angle-right');
+    $(this).closest('.side-menu').toggleClass('closed');
+});
 
 function removeDialog() {
     $('.overlay').remove();
@@ -28,8 +33,6 @@ function removeDialog() {
 function triggerDialogEvent(func) {
     func();
 }
-
-
 
 function dialog(title, text, primaryButton, secondaryButton, callback) {
     var overlay = $('<div>').addClass('overlay').prop('id', 'close-dialog');

@@ -98,7 +98,7 @@ $(document).on('click', '#team-remove-member', function () {
 function createTeam(name) {
     $.post('../../Team/Create', { name })
         .done(function(data) {
-            if (data) {
+            if (data.success) {
                 $('#search-team').val('');
                 location.reload();
             }
@@ -106,52 +106,93 @@ function createTeam(name) {
 }
 
 function renameTeam(teamId, name) {
-    $('.page-header').children('.loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Team/Rename', {
         teamId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
+            var teamName = $('#team-name');
+            teamName.text(teamName.data('original-name'));
         }
-    })
+    });
 }
 
 function deleteTeam(teamId) {
-    $('.page-header > .loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Team/Delete', { teamId })
         .done(function (data) {
             if (data.success) {
                 location.replace(data.redirectUrl);
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
             }
         });
 }
 
 function setActive(teamId) {
-    $('.page-header > .loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Team/SetActive', { teamId })
         .done(function (data) {
-            if (data) {
+            if (data.success) {
                 location.reload();
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
+                }
             }
         });
 }
 
 function addMember(teamId, username) {
-    $('.page-header > .loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Team/AddMember', {
         teamId,
         username
     }).done(function (data) {
-        if (data) {
+        if (data.success) {
             $('.new-member > input').val('');
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
         }
     });
 }
 
 function removeMember(teamId, userId) {
-    $('.page-header > .loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Team/RemoveMember', {
         teamId,
         userId
@@ -161,6 +202,12 @@ function removeMember(teamId, userId) {
                 location.replace(data.redirectUrl);
             } else {
                 location.reload();
+            }
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
             }
         }
     });

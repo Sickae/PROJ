@@ -93,32 +93,56 @@ $(document).on('click', '#team-delete-project', function () {
 });
 
 function createProject(teamId, name) {
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $('.new-project > input').val('');
     $.post('../../Project/Create', {
         teamId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
         }
     });
 }
 
 function renameProject(projectId, name) {
-    $('.page-header').children('.loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Project/Rename', {
         projectId,
         name
     }).done(function(data) {
-        if (data) {
+        if (data.success) {
             location.reload();
+        } else {
+            loader.hide();
+            error.css('display', 'flex');
+            if (data.errorMessage) {
+                error.find('#error-message').text(data.errorMessage);
+            }
+            var projectName = loader.siblings('#project-name');
+            projectName.text(projectName.data('original-name'));
         }
     })
 }
 
 function deleteProject(projectId, redirect) {
     redirect = redirect || false;
-    $('.page-header > .loader').show();
+    var loader = $('.page-header > .loader');
+    var error = $('.page-header > .req-error');
+    error.hide();
+    loader.show();
     $.post('../../Project/Delete', { projectId })
         .done(function (data) {
             if (data.success) {
@@ -126,6 +150,12 @@ function deleteProject(projectId, redirect) {
                     location.replace(data.redirectUrl);
                 } else {
                     location.reload();
+                }
+            } else {
+                loader.hide();
+                error.css('display', 'flex');
+                if (data.errorMessage) {
+                    error.find('#error-message').text(data.errorMessage);
                 }
             }
         });

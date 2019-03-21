@@ -38,13 +38,17 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Team name cannot be empty."
+                });
             }
 
             var team = new TeamDTO { Name = name };
             _teamManager.Create(team);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Show(int id)
@@ -67,20 +71,28 @@ namespace PROJ.Web.Controllers
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Team name cannot be empty."
+                });
             }
 
             var team = _teamRepository.Get(teamId);
 
             if (team == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Team."
+                });
             }
 
             team.Name = name;
             _teamManager.Save(team);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult Delete(int teamId)
@@ -89,7 +101,11 @@ namespace PROJ.Web.Controllers
 
             if (team == null)
             {
-                return Json(new { success = false });
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Team."
+                });
             }
 
             _teamManager.Delete(team);
@@ -107,36 +123,66 @@ namespace PROJ.Web.Controllers
             var team = _teamRepository.Get(teamId);
             var user = _userRepository.GetCurrentUser();
 
-            if (team == null || user == null)
+            if (user == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "You are not logged in."
+                });
+            }
+
+            if (team == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Team."
+                });
             }
 
             user.ActiveTeam = new TeamDTO { Id = teamId };
             _userManager.Save(user);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult AddMember(int teamId, string username)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Username cannot be empty."
+                });
             }
 
             var team = _teamRepository.Get(teamId);
             var user = _userRepository.FindByName(username);
 
-            if (team == null || user == null)
+            if (team == null)
             {
-                return Json(false);
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Team."
+                });
+            }
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = $"There is no User called '{username}'."
+                });
             }
 
             team.Members.Add(user);
             _teamManager.Save(team);
 
-            return Json(true);
+            return Json(new { success = true });
         }
 
         public IActionResult RemoveMember(int teamId, int userId)
@@ -144,16 +190,33 @@ namespace PROJ.Web.Controllers
             var team = _teamRepository.Get(teamId);
             var user = _userRepository.Get(userId);
 
-            if (team == null || user == null)
+            if (team == null)
             {
-                return Json(new { success = false });
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Team."
+                });
+            }
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "This User is not part of your Team."
+                });
             }
 
             var toRemove = team.Members.FirstOrDefault(x => x.Id == userId);
 
             if (toRemove == null)
             {
-                return Json(new { success = false });
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "This User is not part of your Team."
+                });
             }
 
             if (user.ActiveTeam.Id == teamId)
