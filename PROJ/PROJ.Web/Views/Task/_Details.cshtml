@@ -1,0 +1,104 @@
+﻿@using PROJ.Logic.DTOs
+@using PROJ.Shared.Enums
+@using PROJ.Logic.Interfaces
+
+@inject IAppContext AppContext
+
+@model TaskDTO
+
+<form id="task-details-form" asp-controller="Task" asp-action="Edit">
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Priority)
+    @Html.HiddenFor(x => x.TaskGroup.Id)
+    @Html.HiddenFor(x => x.TaskGroup.Project.Id)
+    @foreach (var cl in Model.Checklists)
+    {
+        @Html.HiddenFor(x => cl.Id)
+    }
+    @foreach (var c in Model.Comments)
+    {
+        @Html.HiddenFor(x => c.Id)
+    }
+    @foreach (var u in Model.AssignedUsers)
+    {
+        @Html.HiddenFor(x => u.Id)
+    }
+    <div class="task-details" data-id="@Model.Id">
+        <div class="details-menu">
+            <div class="info-group">
+                <label asp-for="CreationDate"></label>
+                <span>@Model.CreationDate</span>
+            </div>
+            <div class="info-group">
+                <label asp-for="ModificationDate"></label>
+                <span>@Model.ModificationDate</span>
+            </div>
+            <div class="info-group">
+                <label asp-for="Priority"></label>
+                @switch (Model.Priority)
+                {
+                    case Priority.Low:
+                    {
+                        <span class="priority-low">Low</span>
+                        break;
+                    }
+                    case Priority.Normal:
+                    {
+                        <span class="priority-normal">Normal</span>
+                        break;
+                    }
+                    case Priority.High:
+                    {
+                        <span class="priority-high">High</span>
+                        break;
+                    }
+                    case Priority.Critical:
+                    {
+                       <span class="priority-critical">Critical</span>
+                        break;
+                    }
+                }
+            </div>
+            <div class="info-group">
+                <label asp-for="IsCompleted"></label>
+                <input asp-for="IsCompleted" class="form-checkbox" />
+            </div>
+            <div class="info-group">
+                <label asp-for="EstimatedHours"></label>
+                <input asp-for="EstimatedHours" class="info-input" placeholder="not set" />
+            </div>
+        </div>
+
+        <div class="details-body">
+            <div class="details-title">
+                <input asp-for="Name" class="details-input" />
+                <div class="user-icons-container">
+                    @foreach (var user in Model.AssignedUsers)
+                    {
+                        <div class="user-icon">
+                            <img src="~/images/unknown_user.png" title="@user.UserName" style="border: 1px solid #CFD8DC" />
+                        </div>
+                    }
+                </div>
+                <div class="icons-container">
+                    @if (AppContext.AssignedTasks.Any(x => x.Id == Model.Id))
+                    {
+                        <div id="task-leave" class="icon icon-static">
+                            <span class="fas fa-user-minus" title="Leave Task"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="task-join" class="icon icon-static">
+                            <span class="fas fa-user-plus" title="Join Task"></span>
+                        </div>
+                    }
+                    <div id="task-delete" class="icon icon-static icon-large destructive">
+                        <span class="fas fa-trash" title="Delete Task"></span>
+                    </div>
+                </div>
+            </div>
+            <textarea asp-for="Description" class="details-input auto-expand" placeholder="Description" rows="2" data-min-rows="2" spellcheck="false"></textarea>
+        </div>
+    </div>
+</form>

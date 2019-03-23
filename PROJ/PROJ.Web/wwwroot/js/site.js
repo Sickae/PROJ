@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
-    $('.form-checkbox').each(function () {
-        var isChecked = $(this).is(':checked') ? 'checked' : '';
-        $(this).before('<div class="form-checkbox-custom ' + isChecked + '">');
-    });
+    formatCheckboxes();
 });
 
 $(document).on('click', '.form-checkbox-custom', function () {
@@ -14,8 +11,12 @@ $(document).on('focusout', '.form-input[data-val]', function () {
     $(this).toggleClass('form-input-invalid', !$(this).valid());
 });
 
-$(document).on('submit', function () {
-    $('.loader').show();
+$(document).on('submit', function (event) {
+    if ($(event.target).hasClass('page-login-form')) {
+        $('.loader').show();
+    } else {
+        $(event.target).siblings('.loader').show();
+    }
 });
 
 $(document).on('click', '#close-dialog', removeDialog);
@@ -24,6 +25,28 @@ $(document).on('click', '.side-menu-toggle', function () {
     $(this).toggleClass('fa-angle-left fa-angle-right');
     $(this).closest('.side-menu').toggleClass('closed');
 });
+
+// https://codepen.io/vsync/pen/frudD
+$(document).on('focus.auto-expand', 'textarea.auto-expand', function () {
+    var savedValue = this.value;
+    this.value = '';
+    this.baseScrollHeight = this.scrollHeight;
+    this.value = savedValue;
+}).on('input.auto-expand', 'textarea.auto-expand', function () {
+    var minRows = this.getAttribute('data-min-rows')|0, rows;
+    this.rows = minRows;
+    rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+    this.rows = minRows + rows;
+});
+
+function formatCheckboxes() {
+    $('.form-checkbox').each(function () {
+        if ($(this).siblings('div.form-checkbox-custom').length === 0) {
+            var isChecked = $(this).is(':checked') ? 'checked' : '';
+            $(this).before('<div class="form-checkbox-custom ' + isChecked + '">');
+        }
+    });
+}
 
 function removeDialog() {
     $('.overlay').remove();

@@ -6,8 +6,6 @@ namespace PROJ.DataAccess.Entities
 {
     public class Task : Entity
     {
-        public virtual Comment Project { get; set; }
-
         public virtual string Name { get; set; }
 
         [Text]
@@ -24,5 +22,7 @@ namespace PROJ.DataAccess.Entities
         public virtual TaskGroup TaskGroup { get; set; }
 
         public virtual bool IsCompleted { get; set; }
+
+        public virtual int? EstimatedHours { get; set; }
     }
 }

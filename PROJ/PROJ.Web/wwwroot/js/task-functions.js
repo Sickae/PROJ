@@ -58,7 +58,7 @@ $(document).on('click', '#task-delete', function() {
     var $this = $(this);
     dialog('Delete Task', 'Are you sure you want to delete this task?',
         'Yes', 'No', function () {
-            var taskId = $this.closest('.task').data('id');
+            var taskId = $this.closest('.task').data('id') | $('.task-details').data('id');
             deleteTask(taskId);
         });
 });
@@ -94,6 +94,13 @@ $(document).on('click', '#task-leave', function () {
     var taskId = $(this).closest('.task').data('id');
     leaveTask(taskId);
 });
+
+$(document).on('click', '#task-details', function () {
+    var taskId = $(this).closest('.task').data('id');
+    taskDetails(taskId);
+});
+
+$(document).on('click', '#close-task-details', closeTaskDetails);
 
 function sendNewTask(groupId, name) {
     var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
@@ -141,7 +148,10 @@ function renameTask(taskId, name) {
 }
 
 function deleteTask(taskId) {
-    var loader = $('.task[data-id=' + taskId + '] > .loader');
+    var loader = $('.task-details-container > .loader');
+    if (loader.length === 0) {
+        loader = $('.task[data-id=' + taskId + '] > .loader');
+    }
     var error = loader.siblings('.req-error');
     error.hide();
     loader.show();
@@ -237,4 +247,24 @@ function leaveTask(taskId) {
                 }
             }
         });
+}
+
+function taskDetails(taskId) {
+    var loader = $('.task-details-container > .loader');
+    var detailsContainer = $('.task-details-container');
+    $('body').append('<div class="overlay" id="close-task-details">');
+    detailsContainer.show();
+    loader.show();
+    $.get('../../Task/Details', { taskId })
+        .done(function (data) {
+            if (data !== null) {
+                detailsContainer.append(data);
+                formatCheckboxes();
+            }
+            loader.hide();
+        });
+}
+
+function closeTaskDetails() {
+    $('#task-details-form').submit();
 }

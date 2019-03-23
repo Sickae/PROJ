@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace PROJ.Logic.DTOs
 {
@@ -6,8 +7,10 @@ namespace PROJ.Logic.DTOs
     {
         public int Id { get; set; }
 
+        [DisplayName("Created")]
         public DateTime CreationDate { get; set; }
 
+        [DisplayName("Modified")]
         public DateTime ModificationDate { get; set; }
 
         protected DTOBase()

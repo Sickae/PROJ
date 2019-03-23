@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PROJ.Logic.DTOs;
 using PROJ.Logic.Interfaces;
 using PROJ.Logic.UnitOfWork.Managers.Interfaces;
 using PROJ.Logic.UnitOfWork.Repositories;
@@ -183,6 +184,25 @@ namespace PROJ.Web.Controllers
             _taskManager.Save(task);
 
             return Json(new { success = true });
+        }
+
+        public IActionResult Details(int taskId)
+        {
+            var task = _taskRepository.Get(taskId);
+
+            if (task == null)
+            {
+                return null;
+            }
+
+            return PartialView("_Details", task);
+        }
+
+        public IActionResult Edit(TaskDTO model)
+        {
+            _taskManager.Save(model);
+
+            return RedirectToAction(nameof(ProjectController.Show), "Project", new { id = model.TaskGroup.Project.Id });
         }
     }
 }

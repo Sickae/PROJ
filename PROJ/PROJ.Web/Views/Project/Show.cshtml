@@ -84,7 +84,7 @@
                                     }
                                     case Priority.Critical:
                                     {
-                                        <span class="fas fa-exclamation priority-critical" title="Critical Priority"></span>
+                                        <span class="fas fa-exclamation-circle priority-critical" title="Critical Priority"></span>
                                         break;
                                     }
                                     case Priority.Normal:
@@ -107,12 +107,11 @@
                                 <span id="error-message"></span>
                             </div>
                             <div class="icons-container">
-                                <div class="icon">
+                                <div id="task-details" class="icon">
                                     <span class="fas fa-clipboard" title="Details"></span>
                                 </div>
                                 @if (assignedTaskIds.Contains(task.Id))
                                 {
-                                    
                                     <div id="task-leave" class="icon">
                                         <span class="fas fa-user-minus" title="Leave Task"></span>
                                     </div>
@@ -135,7 +134,7 @@
                                         <span class="fas fa-angle-up" title="High priority"></span>
                                     </div>
                                     <div class="priority-icon priority-icon-critical" data-priority="@Priority.Critical">
-                                        <span class="fas fa-exclamation" title="Critical Priority"></span>
+                                        <span class="fas fa-exclamation-circle" title="Critical Priority"></span>
                                     </div>
                                 </div>
                                 <div id="task-delete" class="icon destructive">
@@ -180,4 +179,9 @@
             &nbsp; Add Task Group
         </div>
     </div>
+</div>
+
+<div class="task-details-container">
+    <div class="loader"></div>
+    <span id="close-task-details" class="task-details-close-icon fas fa-times"></span>
 </div>
