@@ -948,7 +948,6 @@ a.side-sub-menu-action:hover {
 
 .info-input {
     background-color: transparent;
-    width: 100px;
     height: 30px;
     text-align: right;
     border: 1px solid transparent;
@@ -956,11 +955,11 @@ a.side-sub-menu-action:hover {
     padding: 5px;
 }
 
-.info-input:hover {
+.info-input:not([readonly]):hover {
     border: 1px solid #CFD8DC;
 }
 
-.info-input:focus {
+.info-input:not([readonly]):focus {
     border: 1px solid #4DB6AC;
 }
 
@@ -976,7 +975,7 @@ a.side-sub-menu-action:hover {
     align-items: baseline;
 }
 
-.details-title > input {
+.details-title > .user-icons-container {
     flex-grow: 1;
 }
 
@@ -1011,18 +1010,17 @@ textarea.details-input {
     border: 1px solid #4DB6AC;
 }
 
-.details-title > .user-icons-container {
-    display: flex;
+.details-title {
     margin-bottom: 10px;
 }
 
-.details-title > .user-icons-container > .user-icon {
-    width: 30px;
-    height: 30px;
+.details-title > .user-icons-container {
+    display: flex;
 }
 
-.details-title > .user-icons-container > .user-icon:first-child {
-    margin-left: 20px;
+.details-title > .user-icons-container > .user-icon {
+    width: 25px;
+    height: 25px;
 }
 
 .details-title > .user-icons-container > .user-icon:not(:first-child) {

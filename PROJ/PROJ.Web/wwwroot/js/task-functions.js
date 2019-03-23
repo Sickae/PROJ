@@ -86,12 +86,12 @@ $(document).on('click', '.priority-icon', function () {
 });
 
 $(document).on('click', '#task-join', function () {
-    var taskId = $(this).closest('.task').data('id');
+    var taskId = $(this).closest('.task').data('id') | $('.task-details').data('id');
     joinTask(taskId);
 });
 
 $(document).on('click', '#task-leave', function () {
-    var taskId = $(this).closest('.task').data('id');
+    var taskId = $(this).closest('.task').data('id') | $('.task-details').data('id');
     leaveTask(taskId);
 });
 
@@ -212,47 +212,78 @@ function setPriority(taskId, priority) {
 }
 
 function joinTask(taskId) {
+    var detailsOpen = $('.task-details').is(':visible');
     var loader = $('.task[data-id=' + taskId + '] > .loader');
     var error = loader.siblings('.req-error');
+
+    if (detailsOpen) {
+        loader = $('.task-details').closest('.loader');
+    }
+
     error.hide();
     loader.show();
-    $.post('../../Task/JoinTask', { taskId})
-        .done(function (data) {
-            if (data.success) {
-                location.reload();
-            } else {
-                loader.hide();
-                error.css('display', 'flex');
-                if (data.errorMessage) {
-                    error.find('#error-message').text(data.errorMessage);
+
+    if (detailsOpen) {
+        var idx = $('[id^=AssignedUsers]').length;
+        var inputId = 'AssignedUsers_' + idx + '__Id';
+        var inputName = 'AssignedUsers[' + idx + '].Id';
+        var hiddenInput = $('<input type="hidden">')
+            .prop('id', inputId)
+            .prop('name', inputName)
+            .val(_USERID);
+        $('#task-details-form').prepend(hiddenInput);
+        reloadTaskDetails();
+    } else {
+        $.post('../../Task/JoinTask', { taskId})
+            .done(function (data) {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    loader.hide();
+                    error.css('display', 'flex');
+                    if (data.errorMessage) {
+                        error.find('#error-message').text(data.errorMessage);
+                    }
                 }
-            }
-        });
+            });
+    }
 }
 
 function leaveTask(taskId) {
+    var detailsOpen = $('.task-details').is(':visible');
     var loader = $('.task[data-id=' + taskId + '] > .loader');
     var error = loader.siblings('.req-error');
+
+    if (detailsOpen) {
+        loader = $('.task-details').closest('.loader');
+    }
+    
     error.hide();
     loader.show();
-    $.post('../../Task/LeaveTask', { taskId})
-        .done(function (data) {
-            if (data.success) {
-                location.reload();
-            } else {
-                loader.hide();
-                error.css('display', 'flex');
-                if (data.errorMessage) {
-                    error.find('#error-message').text(data.errorMessage);
+
+    if (detailsOpen) {
+        $('[id^=AssignedUsers]').filter((idx, obj) => parseInt($(obj).val()) === _USERID).remove();
+        reloadTaskDetails();
+    } else {
+        $.post('../../Task/LeaveTask', { taskId})
+            .done(function (data) {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    loader.hide();
+                    error.css('display', 'flex');
+                    if (data.errorMessage) {
+                        error.find('#error-message').text(data.errorMessage);
+                    }
                 }
-            }
-        });
+            });
+    }
 }
 
 function taskDetails(taskId) {
     var loader = $('.task-details-container > .loader');
     var detailsContainer = $('.task-details-container');
-    $('body').append('<div class="overlay" id="close-task-details">');
+    $('body').append('<div class="overlay details-overlay" id="close-task-details">');
     detailsContainer.show();
     loader.show();
     $.get('../../Task/Details', { taskId })
@@ -267,4 +298,16 @@ function taskDetails(taskId) {
 
 function closeTaskDetails() {
     $('#task-details-form').submit();
+}
+
+function reloadTaskDetails() {
+    var detailsForm = $('#task-details-form');
+    var data = detailsForm.serializeArray();
+    $.post('../../Task/Edit', data)
+        .done(function () {
+            var taskId = detailsForm.find('.task-details').data('id');
+            detailsForm.remove();
+            $('.details-overlay').remove();
+            taskDetails(taskId);
+        });
 }

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject PROJ.Logic.Interfaces.IAppContext AppContext
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -55,6 +57,11 @@
         <script type="text/javascript">
             @{ var antiForgery = Html.GetAntiforgeryToken(); }
             setupAjaxCSRFToken('@antiForgery.HeaderName', '@antiForgery.RequestToken');
+
+            @if (AppContext.UserId.HasValue)
+            {
+                @:const _USERID = @AppContext.UserId.Value;
+            }
         </script>
 
         @RenderSection("Scripts", required: false)

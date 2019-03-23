@@ -49,7 +49,7 @@ function formatCheckboxes() {
 }
 
 function removeDialog() {
-    $('.overlay').remove();
+    $('.dialog-overlay').remove();
     $('.dialog-box').fadeOut(150, () => $(this).remove());
 }
 
@@ -58,7 +58,7 @@ function triggerDialogEvent(func) {
 }
 
 function dialog(title, text, primaryButton, secondaryButton, callback) {
-    var overlay = $('<div>').addClass('overlay').prop('id', 'close-dialog');
+    var overlay = $('<div>').addClass('overlay dialog-overlay').prop('id', 'close-dialog');
     var dialog = $('<div>').addClass('dialog-box');
     var dialogHeader = $('<div>').addClass('dialog-box-header');
     var dialogTitle = $('<span>').addClass('dialog-box-title').text(title);

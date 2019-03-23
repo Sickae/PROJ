@@ -11,53 +11,31 @@
     @Html.HiddenFor(x => x.Priority)
     @Html.HiddenFor(x => x.TaskGroup.Id)
     @Html.HiddenFor(x => x.TaskGroup.Project.Id)
-    @foreach (var cl in Model.Checklists)
+    @for (int i = 0; i < Model.Checklists.Count; i++)
     {
-        @Html.HiddenFor(x => cl.Id)
+        @Html.HiddenFor(x => x.Checklists[i].Id)
     }
-    @foreach (var c in Model.Comments)
+    @for (int i = 0; i < Model.Comments.Count; i++)
     {
-        @Html.HiddenFor(x => c.Id)
+        @Html.HiddenFor(x => x.Comments[i].Id)
     }
-    @foreach (var u in Model.AssignedUsers)
+    @for (int i = 0; i < Model.AssignedUsers.Count; i++)
     {
-        @Html.HiddenFor(x => u.Id)
+        @Html.HiddenFor(x => x.AssignedUsers[i].Id)
     }
     <div class="task-details" data-id="@Model.Id">
         <div class="details-menu">
             <div class="info-group">
                 <label asp-for="CreationDate"></label>
-                <span>@Model.CreationDate</span>
+                <input asp-for="CreationDate" class="info-input" readonly />
             </div>
             <div class="info-group">
                 <label asp-for="ModificationDate"></label>
-                <span>@Model.ModificationDate</span>
+                <input asp-for="ModificationDate" class="info-input" readonly />
             </div>
             <div class="info-group">
                 <label asp-for="Priority"></label>
-                @switch (Model.Priority)
-                {
-                    case Priority.Low:
-                    {
-                        <span class="priority-low">Low</span>
-                        break;
-                    }
-                    case Priority.Normal:
-                    {
-                        <span class="priority-normal">Normal</span>
-                        break;
-                    }
-                    case Priority.High:
-                    {
-                        <span class="priority-high">High</span>
-                        break;
-                    }
-                    case Priority.Critical:
-                    {
-                       <span class="priority-critical">Critical</span>
-                        break;
-                    }
-                }
+                <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="form-select"></select>
             </div>
             <div class="info-group">
                 <label asp-for="IsCompleted"></label>
@@ -71,7 +49,6 @@
 
         <div class="details-body">
             <div class="details-title">
-                <input asp-for="Name" class="details-input" />
                 <div class="user-icons-container">
                     @foreach (var user in Model.AssignedUsers)
                     {
@@ -98,6 +75,7 @@
                     </div>
                 </div>
             </div>
+            <input asp-for="Name" class="details-input" />
             <textarea asp-for="Description" class="details-input auto-expand" placeholder="Description" rows="2" data-min-rows="2" spellcheck="false"></textarea>
         </div>
     </div>
