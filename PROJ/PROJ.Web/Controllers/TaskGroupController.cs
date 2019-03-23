@@ -21,6 +21,7 @@ namespace PROJ.Web.Controllers
             _taskManager = taskManager;
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult AddNewTask(int groupId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -54,6 +55,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Rename(int groupId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -82,6 +84,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int groupId)
         {
             var group = _taskGroupRepository.Get(groupId);

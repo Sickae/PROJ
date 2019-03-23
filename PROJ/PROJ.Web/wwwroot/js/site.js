@@ -79,3 +79,11 @@ function dialog(title, text, primaryButton, secondaryButton, callback) {
 
     $('body').prepend(overlay).append(dialog);
 }
+
+function setupAjaxCSRFToken(fieldName, token) {
+    $.ajaxSetup({
+        headers: {
+            [fieldName]: token
+        }
+    });
+}

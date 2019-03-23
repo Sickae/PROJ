@@ -24,6 +24,7 @@ namespace PROJ.Web.Controllers
             _appContext = appContext;
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Rename(int taskId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -52,6 +53,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int taskId)
         {
             var task = _taskRepository.Get(taskId);
@@ -70,6 +72,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult ToggleComplete(int taskId, bool state)
         {
             var task = _taskRepository.Get(taskId);
@@ -89,6 +92,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult SetPriority(int taskId, Priority priority)
         {
             var task = _taskRepository.Get(taskId);
@@ -108,6 +112,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult JoinTask(int taskId)
         {
             var task = _taskRepository.Get(taskId);
@@ -146,6 +151,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult LeaveTask(int taskId)
         {
             var task = _taskRepository.Get(taskId);
@@ -186,6 +192,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpGet]
         public IActionResult Details(int taskId)
         {
             var task = _taskRepository.Get(taskId);
@@ -198,6 +205,7 @@ namespace PROJ.Web.Controllers
             return PartialView("_Details", task);
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Edit(TaskDTO model)
         {
             _taskManager.Save(model);

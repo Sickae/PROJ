@@ -35,6 +35,7 @@ namespace PROJ.Web.Controllers
             return View();
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(int teamId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -56,6 +57,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpGet]
         public IActionResult Show(int id)
         {
             var project = _projectRepository.Get(id);
@@ -72,6 +74,7 @@ namespace PROJ.Web.Controllers
             return View(vm);
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult AddNewGroup(int projectId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -104,6 +107,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Rename(int projectId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -132,6 +136,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int projectId)
         {
             var project = _projectRepository.Get(projectId);

@@ -34,6 +34,7 @@ namespace PROJ.Web.Controllers
             return View();
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -51,6 +52,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpGet]
         public IActionResult Show(int id)
         {
             var team = _teamRepository.Get(id);
@@ -67,6 +69,7 @@ namespace PROJ.Web.Controllers
             return View(vm);
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Rename(int teamId, string name)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
@@ -95,6 +98,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int teamId)
         {
             var team = _teamRepository.Get(teamId);
@@ -118,6 +122,7 @@ namespace PROJ.Web.Controllers
             });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult SetActive(int teamId)
         {
             var team = _teamRepository.Get(teamId);
@@ -147,6 +152,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult AddMember(int teamId, string username)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
@@ -185,6 +191,7 @@ namespace PROJ.Web.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult RemoveMember(int teamId, int userId)
         {
             var team = _teamRepository.Get(teamId);
