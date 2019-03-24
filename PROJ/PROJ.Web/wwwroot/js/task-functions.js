@@ -125,6 +125,28 @@ $(document).on('click', '.priority-option', function () {
     $('#' + binderId).val(val);
 });
 
+$(document).on('click', '#section-toggle', function () {
+    var container = $(this).closest('.section').find('.section-container');
+
+    if ($(this).hasClass('fa-angle-up')) {
+        container.slideUp();
+    } else {
+        container.slideDown();
+    }
+
+    $(this).toggleClass('fa-angle-up fa-angle-down');
+});
+
+$(document).on('keyup', '.comment-new > textarea.comment-text', function () {
+    if ($(this).val().length > 0) {
+        $('#comment-send').removeAttr('disabled');
+    } else {
+        $('#comment-send').prop('disabled', 'disabled');
+    }
+});
+
+$(document).on('click', '#comment-send', sendComment);
+
 function sendNewTask(groupId, name) {
     var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
     var error = loader.siblings('.req-error');
@@ -333,4 +355,25 @@ function reloadTaskDetails() {
             $('.details-overlay').remove();
             taskDetails(taskId);
         });
+}
+
+function sendComment() {
+    var taskId = $('.task-details').data('id');
+    var commentText = $('.comment-new > textarea.comment-text').val();
+    $.post('../../Task/AddNewComment', {
+        taskId,
+        commentText
+    }).done(function(data) {
+        if (data.success) {
+            var idx = $('[id^=Comments]').length;
+            var inputId = 'Comments_' + idx + '__Id';
+            var inputName = 'Comments[' + idx + '].Id';
+            var hiddenInput = $('<input type="hidden">')
+                .prop('id', inputId)
+                .prop('name', inputName)
+                .val(data.id);
+            $('#task-details-form').prepend(hiddenInput);
+            reloadTaskDetails();
+        }
+    });
 }

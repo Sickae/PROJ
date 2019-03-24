@@ -15,12 +15,14 @@ namespace PROJ.Web.Controllers
     {
         private readonly TaskRepository _taskRepository;
         private readonly ITaskManager _taskManager;
+        private readonly ICommentManager _commentManager;
         private readonly IAppContext _appContext;
 
-        public TaskController(TaskRepository taskRepository, ITaskManager taskManager, IAppContext appContext)
+        public TaskController(TaskRepository taskRepository, ITaskManager taskManager, ICommentManager commentManager, IAppContext appContext)
         {
             _taskRepository = taskRepository;
             _taskManager = taskManager;
+            _commentManager = commentManager;
             _appContext = appContext;
         }
 
@@ -211,6 +213,45 @@ namespace PROJ.Web.Controllers
             _taskManager.Save(model);
 
             return RedirectToAction(nameof(ProjectController.Show), "Project", new { id = model.TaskGroup.Project.Id });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult AddNewComment(int taskId, string commentText)
+        {
+            if (string.IsNullOrEmpty(commentText) || string.IsNullOrWhiteSpace(commentText))
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Comment cannot be empty."
+                });
+            }
+
+            var task = _taskRepository.Get(taskId);
+
+            if (task == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Invalid Task."
+                });
+            }
+
+            var comment = new CommentDTO
+            {
+                Author = new UserDTO { Id = _appContext.UserId.Value },
+                Text = commentText,
+                Task = task
+            };
+
+            var id = _commentManager.Create(comment);
+
+            return Json(new
+            {
+                success = true,
+                id
+            });
         }
     }
 }

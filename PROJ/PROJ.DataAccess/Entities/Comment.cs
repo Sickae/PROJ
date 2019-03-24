@@ -8,5 +8,7 @@ namespace PROJ.DataAccess.Entities
 
         [Text]
         public virtual string Text { get; set; }
+
+        public virtual Task Task { get; set; }
     }
 }

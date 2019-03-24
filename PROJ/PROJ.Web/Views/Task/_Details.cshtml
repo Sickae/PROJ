@@ -91,7 +91,7 @@
             <div class="details-title">
                 <div class="user-icons-container">
                     @foreach (var user in Model.AssignedUsers)
-                                        {
+                    {
                         <div class="user-icon">
                             <img src="~/images/unknown_user.png" title="@user.UserName" style="border: 1px solid #CFD8DC" />
                         </div>
@@ -117,6 +117,33 @@
             </div>
             <input asp-for="Name" class="details-input" />
             <textarea asp-for="Description" class="details-input auto-expand" placeholder="Description" rows="2" data-min-rows="2" spellcheck="false"></textarea>
+
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Comments</span>
+                    <span id="section-toggle" class="fas fa-angle-up"></span>
+                </div>
+                <div class="section-container">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="comment">
+                            <div class="comment-header">
+                                <div class="user-icon">
+                                    <img src="~/images/unknown_user.png" title="@comment.Author.UserName" style="border: 1px solid #CFD8DC" />
+                                </div>
+                                <span class="comment-author">@comment.Author.UserName</span>
+                                <span class="comment-date">@comment.CreationDate.ToLocalTime()</span>
+                            </div>
+                            <div class="comment-text">@comment.Text</div>
+                        </div>
+                    }
+
+                    <div class="comment comment-new">
+                        <textarea spellcheck="false" class="comment-text auto-expand" placeholder="Write a comment..." rows="2" data-min-rows="2"></textarea>
+                    </div>
+                    <button type="button" id="comment-send" class="btn btn-teal" disabled>Send</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
