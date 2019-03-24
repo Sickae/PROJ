@@ -102,6 +102,29 @@ $(document).on('click', '#task-details', function () {
 
 $(document).on('click', '#close-task-details', closeTaskDetails);
 
+$(document).on('click', '#details-set-priority', function () {
+    $(this).find('.priority-options').toggle();
+    $(this).before('<div id="close-priority-select" class="overlay select-overlay">')
+});
+
+$(document).on('click', '#close-priority-select', function () {
+    $('.select-overlay').remove();
+    $('.priority-options').hide();
+});
+
+$(document).on('click', '.priority-option', function () {
+    var val = $(this).data('value');
+    var text = $(this).find('.option-name').text();
+    var priorityClass = $(this).find('.option-icon > span').data('class');
+    var parent = $(this).closest('.priority-options');
+    var binderId = $(this).closest('#details-set-priority').data('binder-id');
+
+    parent.find('.priority-option.selected').removeClass('selected');
+    $(this).addClass('selected');
+    $('#priority-selected').text(text).prop('class', priorityClass);
+    $('#' + binderId).val(val);
+});
+
 function sendNewTask(groupId, name) {
     var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
     var error = loader.siblings('.req-error');

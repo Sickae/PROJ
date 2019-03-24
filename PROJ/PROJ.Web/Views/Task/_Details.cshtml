@@ -11,6 +11,8 @@
     @Html.HiddenFor(x => x.Priority)
     @Html.HiddenFor(x => x.TaskGroup.Id)
     @Html.HiddenFor(x => x.TaskGroup.Project.Id)
+    @Html.HiddenFor(x => x.CreationDate)
+    @Html.HiddenFor(x => x.ModificationDate)
     @for (int i = 0; i < Model.Checklists.Count; i++)
     {
         @Html.HiddenFor(x => x.Checklists[i].Id)
@@ -27,15 +29,53 @@
         <div class="details-menu">
             <div class="info-group">
                 <label asp-for="CreationDate"></label>
-                <input asp-for="CreationDate" class="info-input" readonly />
+                <span>@Model.CreationDate.ToLocalTime()</span>
             </div>
             <div class="info-group">
                 <label asp-for="ModificationDate"></label>
-                <input asp-for="ModificationDate" class="info-input" readonly />
+                <span>@Model.ModificationDate.ToLocalTime()</span>
             </div>
             <div class="info-group">
                 <label asp-for="Priority"></label>
-                <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="form-select"></select>
+                @Html.HiddenFor(x => x.Priority)
+                <div id="details-set-priority" class="info-input" data-binder-id="@Html.IdFor(x => x.Priority)">
+                    @{ var priorityClass = "priority-" + Model.Priority.ToString().ToLower(); }
+                    <span id="priority-selected" class="@priorityClass">@Model.Priority</span>
+                    <div class="priority-options">
+                        @foreach (var p in Enum.GetValues(typeof(Priority)).Cast<object>().OrderByDescending(x => (int)x))
+                        {
+                            var selected = Model.Priority == (Priority)p ? "selected" : "";
+                            <div class="priority-option @selected" data-value="@((int)p)">
+                                <div class="option-icon">
+                                    @switch ((Priority)p)
+                                    {
+                                        case Priority.Low:
+                                        {
+                                            <span class="fas fa-angle-down priority-low" data-class="priority-low"></span>
+                                            break;
+                                        }
+                                        case Priority.Normal:
+                                        {
+                                            <span class="fas fa-minus priority-normal" data-class="priority-normal"></span>
+                                            break;
+                                        }
+                                        case Priority.High:
+                                        {
+                                            <span class="fas fa-angle-up priority-high" data-class="priority-high"></span>
+                                            break;
+                                        }
+                                        case Priority.Critical:
+                                        {
+                                            <span class="fas fa-exclamation-circle priority-critical" data-class="priority-critical"></span>
+                                            break;
+                                        }
+                                    }
+                                </div>
+                                <span class="option-name">@((Priority)p)</span>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
             <div class="info-group">
                 <label asp-for="IsCompleted"></label>
@@ -51,7 +91,7 @@
             <div class="details-title">
                 <div class="user-icons-container">
                     @foreach (var user in Model.AssignedUsers)
-                    {
+                                        {
                         <div class="user-icon">
                             <img src="~/images/unknown_user.png" title="@user.UserName" style="border: 1px solid #CFD8DC" />
                         </div>
