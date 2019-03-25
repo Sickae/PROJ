@@ -28,6 +28,10 @@ textarea {
     outline: none;
 }
 
+textarea {
+    min-height: 60px;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }

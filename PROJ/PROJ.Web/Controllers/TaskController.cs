@@ -210,6 +210,9 @@ namespace PROJ.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Edit(TaskDTO model)
         {
+            var task = _taskRepository.Get(model.Id);
+
+            model.Comments = task.Comments;
             _taskManager.Save(model);
 
             return RedirectToAction(nameof(ProjectController.Show), "Project", new { id = model.TaskGroup.Project.Id });

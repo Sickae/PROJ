@@ -147,6 +147,12 @@ $(document).on('keyup', '.comment-new > textarea.comment-text', function () {
 
 $(document).on('click', '#comment-send', sendComment);
 
+$(document).on('keydown', '.comment-new > textarea.comment-text', function (event) {
+    if (event.keyCode === 13 && event.ctrlKey) {
+        sendComment();
+    }
+});
+
 function sendNewTask(groupId, name) {
     var loader = $('.task-group[data-id=' + groupId + ']').find('.loader').last();
     var error = loader.siblings('.req-error');
